@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Inventory Management System | Device Storage Edition</title>
 
-<style>
-/* Inventory Management System - Enhanced Premium Stylesheet */
+<style>/* Inventory Management System - Enhanced Premium Stylesheet */
 /* Elegant Sage Green & Cream Palette with Modern Touches */
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap');
@@ -53,6 +52,13 @@ body {
     --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     --transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
     --transition-fast: all 0.2s ease;
+}
+
+/* ==================== CONTAINER ==================== */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
 }
 
 /* ==================== LOGIN SCREEN ==================== */
@@ -285,12 +291,6 @@ button:active {
 }
 
 /* ==================== TABLES ==================== */
-.table-wrapper {
-    overflow-x: auto;
-    border-radius: 20px;
-    margin-top: 16px;
-}
-
 table {
     width: 100%;
     border-collapse: collapse;
@@ -315,6 +315,10 @@ th {
 td {
     color: var(--orthiva-text-light);
     font-size: 14px;
+    transition: var(--transition-fast);
+}
+
+tr {
     transition: var(--transition-fast);
 }
 
@@ -410,41 +414,6 @@ tr:hover {
     letter-spacing: 1px;
 }
 
-/* ==================== FILTER BAR ==================== */
-.filter-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 20px;
-    align-items: center;
-    background: linear-gradient(135deg, var(--orthiva-cream-light), var(--white));
-    padding: 16px 24px;
-    border-radius: 80px;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(155, 184, 117, 0.15);
-}
-
-.filter-bar input, .filter-bar select {
-    width: auto;
-    min-width: 160px;
-    margin: 0;
-    background: var(--white);
-}
-
-.filter-bar button {
-    width: auto;
-    padding: 10px 26px;
-    background: linear-gradient(135deg, var(--orthiva-sage-dark), var(--orthiva-sage));
-}
-
-.filter-bar button.reset-btn {
-    background: linear-gradient(135deg, var(--orthiva-text-light), var(--orthiva-text-dark));
-}
-
-.filter-bar button.reset-btn:hover {
-    background: linear-gradient(135deg, var(--orthiva-text-dark), var(--orthiva-text-dark));
-}
-
 /* ==================== HEADINGS ==================== */
 h1, h2, h3 {
     margin-bottom: 16px;
@@ -513,8 +482,6 @@ h2::before {
     .topbar h1 { font-size: 26px; }
     .tab-btn { padding: 10px 16px; font-size: 13px; }
     .tab-pane { padding: 16px; }
-    .filter-bar { flex-direction: column; border-radius: 28px; }
-    .filter-bar input, .filter-bar select, .filter-bar button { width: 100%; }
 }
 
 @media (max-width: 480px) {
@@ -522,48 +489,69 @@ h2::before {
     .card { padding: 16px; }
     .stat-box h2 { font-size: 24px; }
     .tab-btn { padding: 8px 12px; font-size: 12px; }
-}
-</style>
+}</style>
 </head>
+
 <body>
 
 <!-- LOGIN -->
 <div id="loginScreen" class="card">
     <h2>Inventory Login</h2>
+
     <input type="password" id="adminPassword" placeholder="Admin Password">
     <br><br>
+
     <button onclick="loginAdmin()">Login As Admin</button>
     <br><br>
+
     <button onclick="loginViewer()">Enter As Viewer</button>
 </div>
 
 <!-- APP -->
 <div id="app" class="hidden">
+
     <div class="topbar">
         <h1>Inventory Management</h1>
+
         <div>
             <span id="roleText"></span>
-            <button onclick="logout()" style="width:auto;">Logout</button>
+
+            <button onclick="logout()" style="width:auto;">
+                Logout
+            </button>
         </div>
     </div>
 
     <!-- ADD PRODUCT -->
     <div class="card" id="adminPanel">
+
         <h2>Add Product</h2>
+
         <div class="grid">
+
             <input type="text" id="name" placeholder="Product Name">
+
             <input type="text" id="size" placeholder="Size">
+
             <select id="unitTypeSelect">
                 <option value="Pcs">Pcs</option>
                 <option value="Meter">Meter</option>
                 <option value="Kg">Kg</option>
                 <option value="Bundle">Bundle</option>
             </select>
+
             <input type="number" id="quantity" placeholder="Quantity">
+
             <input type="number" id="minStock" placeholder="Min Stock">
+
         </div>
+
         <br>
-        <button onclick="addProductHandler()">Add Product</button>
+
+        <button onclick="addProductHandler()">
+            Add Product
+        </button>
+
     </div>
 
     <!-- STATS -->
@@ -571,423 +559,1008 @@ h2::before {
 
     <!-- TABS -->
     <div class="card">
+
         <div class="tabs-header">
-            <button class="tab-btn active" onclick="switchTab('productsTab', this)">Products</button>
-            <button class="tab-btn" onclick="switchTab('transactionsTab', this)">Transactions</button>
+
+            <button class="tab-btn active"
+                onclick="switchTab('productsTab', this)">
+                Products
+            </button>
+
+            <button class="tab-btn"
+                onclick="switchTab('transactionsTab', this)">
+                Transactions
+            </button>
+
         </div>
 
-        <!-- PRODUCTS TAB WITH FILTERS -->
+        <!-- PRODUCTS TAB -->
         <div id="productsTab" class="tab-pane active">
-            <div class="filter-bar">
-                <input type="text" id="productSearchInput" placeholder="🔍 Search by name or size..." autocomplete="off">
-                <select id="productStatusFilter">
-                    <option value="all">All Status</option>
-                    <option value="normal">Normal</option>
-                    <option value="low">Low Stock</option>
-                    <option value="critical">Critical</option>
-                </select>
-                <button id="resetProductFiltersBtn" class="reset-btn" onclick="resetProductFilters()">Reset Filters</button>
-            </div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr><th>Name</th><th>Size</th><th>Unit</th><th>Qty</th><th>Min</th><th>Status</th><th>Actions</th></tr>
-                    </thead>
-                    <tbody id="productTable"></tbody>
-                </table>
-            </div>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Unit</th>
+                        <th>Qty</th>
+                        <th>Min</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="productTable"></tbody>
+
+            </table>
+
         </div>
 
-        <!-- TRANSACTIONS TAB WITH FILTERS -->
+        <!-- TRANSACTION TAB -->
         <div id="transactionsTab" class="tab-pane">
-            <div class="filter-bar">
-                <input type="text" id="transactionSearchInput" placeholder="🔍 Search by product name..." autocomplete="off">
-                <select id="transactionTypeFilter">
-                    <option value="all">All Types</option>
-                    <option value="add">Stock Added</option>
-                    <option value="remove">Stock Removed</option>
-                    <option value="initial">Initial Entry</option>
-                </select>
-                <button id="resetTransactionFiltersBtn" class="reset-btn" onclick="resetTransactionFilters()">Reset Filters</button>
-            </div>
-            <div class="table-wrapper">
-                <table>
-                    <thead><tr><th>Product</th><th>Type</th><th>Qty</th><th>Previous</th><th>New</th><th>Date</th></tr></thead>
-                    <tbody id="transactionTable"></tbody>
-                </table>
-            </div>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Type</th>
+                        <th>Qty</th>
+                        <th>Previous</th>
+                        <th>New</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody id="transactionTable"></tbody>
+
+            </table>
+
         </div>
+
     </div>
+
 </div>
 
 <script>
+
     // ======================================
-    // CONFIG & GLOBALS
+    // CONFIG
     // ======================================
-    const API_URL = "https://script.google.com/macros/s/AKfycbybZXQt8wUQjFuevaIUGPPUiUpkjOqOUMasdOFNg2xTi6qzySVa88EATdIst1MYhij4vg/exec";
+    
+    const API_URL =
+    "https://script.google.com/macros/s/AKfycbybZXQt8wUQjFuevaIUGPPUiUpkjOqOUMasdOFNg2xTi6qzySVa88EATdIst1MYhij4vg/exec";
+    
     const ADMIN_PASSWORD = "admin123";
+    
+    // Restore previous session
     let MODE = sessionStorage.getItem("inventory-mode") || "viewer";
     
-    // Filter state trackers
-    let currentProductFilter = { search: "", status: "all" };
-    let currentTransactionFilter = { search: "", type: "all" };
-
     // ======================================
-    // LOGIN & SESSION
+    // AUTO START SESSION
     // ======================================
+    
     window.addEventListener("load", async () => {
+    
         if(sessionStorage.getItem("inventory-logged") === "true"){
-            document.getElementById("loginScreen").classList.add("hidden");
-            document.getElementById("app").classList.remove("hidden");
-            document.getElementById("roleText").innerText = MODE.toUpperCase();
-            if(MODE === "viewer") document.getElementById("adminPanel").style.display = "none";
+    
+            document.getElementById("loginScreen")
+                .classList.add("hidden");
+    
+            document.getElementById("app")
+                .classList.remove("hidden");
+    
+            document.getElementById("roleText")
+                .innerText = MODE.toUpperCase();
+    
+            if(MODE === "viewer"){
+    
+                document.getElementById("adminPanel")
+                    .style.display = "none";
+            }
+    
             await InventoryDB.init();
-            attachFilterEvents();
         }
     });
-
+    
+    // ======================================
+    // LOGIN
+    // ======================================
+    
     async function loginAdmin(){
-        const password = document.getElementById("adminPassword").value;
-        if(password !== ADMIN_PASSWORD){ alert("Wrong Password"); return; }
+    
+        const password =
+            document.getElementById("adminPassword").value;
+    
+        if(password !== ADMIN_PASSWORD){
+    
+            alert("Wrong Password");
+    
+            return;
+        }
+    
         MODE = "admin";
+    
         sessionStorage.setItem("inventory-mode","admin");
         sessionStorage.setItem("inventory-logged","true");
+    
         await startApp();
     }
+    
     async function loginViewer(){
+    
         MODE = "viewer";
+    
         sessionStorage.setItem("inventory-mode","viewer");
         sessionStorage.setItem("inventory-logged","true");
+    
         await startApp();
     }
+    
     function logout(){
+    
         sessionStorage.clear();
-        document.getElementById("app").classList.add("hidden");
-        document.getElementById("loginScreen").classList.remove("hidden");
+    
+        document.getElementById("app")
+            .classList.add("hidden");
+    
+        document.getElementById("loginScreen")
+            .classList.remove("hidden");
+    
         document.getElementById("adminPassword").value = "";
     }
+    
     async function startApp(){
-        document.getElementById("loginScreen").classList.add("hidden");
-        document.getElementById("app").classList.remove("hidden");
-        document.getElementById("roleText").innerText = MODE.toUpperCase();
-        if(MODE === "viewer") document.getElementById("adminPanel").style.display = "none";
-        else document.getElementById("adminPanel").style.display = "block";
+    
+        document.getElementById("loginScreen")
+            .classList.add("hidden");
+    
+        document.getElementById("app")
+            .classList.remove("hidden");
+    
+        document.getElementById("roleText")
+            .innerText = MODE.toUpperCase();
+    
+        if(MODE === "viewer"){
+    
+            document.getElementById("adminPanel")
+                .style.display = "none";
+    
+        }else{
+    
+            document.getElementById("adminPanel")
+                .style.display = "block";
+        }
+    
         await InventoryDB.init();
-        attachFilterEvents();
     }
-
+    
+    // ======================================
+    // TABS
+    // ======================================
+    
     function switchTab(tabId, btn){
-        document.querySelectorAll(".tab-pane").forEach(el => el.classList.remove("active"));
-        document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
-        document.getElementById(tabId).classList.add("active");
+    
+        document.querySelectorAll(".tab-pane")
+            .forEach(el => el.classList.remove("active"));
+    
+        document.querySelectorAll(".tab-btn")
+            .forEach(el => el.classList.remove("active"));
+    
+        document.getElementById(tabId)
+            .classList.add("active");
+    
         btn.classList.add("active");
-        // Refresh renders when switching tabs to ensure clean state
-        renderProducts();
-        renderTransactions();
     }
-
-    // Attach real-time filter listeners
-    function attachFilterEvents(){
-        // Products filters
-        const productSearch = document.getElementById("productSearchInput");
-        const productStatus = document.getElementById("productStatusFilter");
-        if(productSearch){
-            productSearch.addEventListener("input", (e) => {
-                currentProductFilter.search = e.target.value.toLowerCase();
-                renderProducts();
-            });
-        }
-        if(productStatus){
-            productStatus.addEventListener("change", (e) => {
-                currentProductFilter.status = e.target.value;
-                renderProducts();
-            });
-        }
-        // Transactions filters
-        const transSearch = document.getElementById("transactionSearchInput");
-        const transType = document.getElementById("transactionTypeFilter");
-        if(transSearch){
-            transSearch.addEventListener("input", (e) => {
-                currentTransactionFilter.search = e.target.value.toLowerCase();
-                renderTransactions();
-            });
-        }
-        if(transType){
-            transType.addEventListener("change", (e) => {
-                currentTransactionFilter.type = e.target.value;
-                renderTransactions();
-            });
-        }
-    }
-
-    function resetProductFilters(){
-        document.getElementById("productSearchInput").value = "";
-        document.getElementById("productStatusFilter").value = "all";
-        currentProductFilter.search = "";
-        currentProductFilter.status = "all";
-        renderProducts();
-    }
-    function resetTransactionFilters(){
-        document.getElementById("transactionSearchInput").value = "";
-        document.getElementById("transactionTypeFilter").value = "all";
-        currentTransactionFilter.search = "";
-        currentTransactionFilter.type = "all";
-        renderTransactions();
-    }
-
+    
     // ======================================
-    // DATABASE (SAME AS ORIGINAL WITH MIGRATION)
+    // DATABASE
     // ======================================
+    
     const InventoryDB = {
-        memory:{ products:[], transactions:[] },
-        folderHandle:null, db:null, initialized:false,
+    
+        memory:{
+            products:[],
+            transactions:[]
+        },
+    
+        folderHandle:null,
+    
+        db:null,
+    
+        initialized:false,
+    
         async init(){
+    
             if(this.initialized) return;
+    
             this.initialized = true;
+    
             if(MODE === "admin"){
+    
                 await this.initializeDeviceStorage();
+    
                 await this.loadDeviceFiles();
+    
                 this.ensureMigration();
-                renderProducts(); renderTransactions(); renderStats();
+    
+                renderProducts();
+                renderTransactions();
+                renderStats();
+    
                 await this.syncToCloud();
-            } else {
+    
+            }else{
+    
                 await this.loadFromCloud();
-                renderProducts(); renderTransactions(); renderStats();
+    
+                renderProducts();
+                renderTransactions();
+                renderStats();
             }
         },
+    
+        // ======================================
+        // OPEN INDEXED DB
+        // ======================================
+    
         async openDB(){
+    
             if(this.db) return this.db;
+    
             this.db = await new Promise((resolve,reject)=>{
-                const request = indexedDB.open("InventoryStorageDB",1);
+    
+                const request =
+                    indexedDB.open("InventoryStorageDB",1);
+    
                 request.onupgradeneeded = ()=>{
+    
                     const db = request.result;
-                    if(!db.objectStoreNames.contains("folders")) db.createObjectStore("folders");
+    
+                    if(!db.objectStoreNames.contains("folders")){
+    
+                        db.createObjectStore("folders");
+                    }
                 };
-                request.onsuccess = ()=> resolve(request.result);
-                request.onerror = ()=> reject(request.error);
+    
+                request.onsuccess =
+                    ()=> resolve(request.result);
+    
+                request.onerror =
+                    ()=> reject(request.error);
             });
+    
             return this.db;
         },
+    
+        // ======================================
+        // DEVICE STORAGE
+        // ======================================
+    
         async initializeDeviceStorage(){
+    
             try{
+    
                 const db = await this.openDB();
-                const savedHandle = await new Promise((resolve,reject)=>{
-                    const tx = db.transaction("folders","readonly");
-                    const store = tx.objectStore("folders");
-                    const req = store.get("inventoryFolder");
-                    req.onsuccess = ()=> resolve(req.result);
+    
+                // TRY RESTORE
+                const savedHandle =
+                    await new Promise((resolve,reject)=>{
+    
+                        const tx =
+                            db.transaction("folders","readonly");
+    
+                        const store =
+                            tx.objectStore("folders");
+    
+                        const req =
+                            store.get("inventoryFolder");
+    
+                        req.onsuccess =
+                            ()=> resolve(req.result);
+    
+                        req.onerror =
+                            ()=> reject(req.error);
+                    });
+    
+                // HANDLE EXISTS
+                if(savedHandle){
+    
+                    let permission =
+                        await savedHandle.queryPermission({
+                            mode:"readwrite"
+                        });
+    
+                    // ASK ONLY IF NEEDED
+                    if(permission !== "granted"){
+    
+                        permission =
+                            await savedHandle.requestPermission({
+                                mode:"readwrite"
+                            });
+                    }
+    
+                    if(permission === "granted"){
+    
+                        this.folderHandle = savedHandle;
+    
+                        console.log("Folder restored");
+    
+                        return;
+                    }
+                }
+    
+                // ASK FIRST TIME ONLY
+                alert(
+                    "Select a folder for permanent inventory storage"
+                );
+    
+                const folderHandle =
+                    await window.showDirectoryPicker();
+    
+                const permission =
+                    await folderHandle.requestPermission({
+                        mode:"readwrite"
+                    });
+    
+                if(permission !== "granted"){
+    
+                    alert("Folder permission denied");
+    
+                    return;
+                }
+    
+                this.folderHandle = folderHandle;
+    
+                // SAVE HANDLE
+                await new Promise((resolve,reject)=>{
+    
+                    const tx =
+                        db.transaction("folders","readwrite");
+    
+                    const store =
+                        tx.objectStore("folders");
+    
+                    const req =
+                        store.put(
+                            folderHandle,
+                            "inventoryFolder"
+                        );
+    
+                    req.onsuccess = ()=> resolve();
+    
                     req.onerror = ()=> reject(req.error);
                 });
-                if(savedHandle){
-                    let permission = await savedHandle.queryPermission({ mode:"readwrite" });
-                    if(permission !== "granted") permission = await savedHandle.requestPermission({ mode:"readwrite" });
-                    if(permission === "granted"){ this.folderHandle = savedHandle; console.log("Folder restored"); return; }
-                }
-                alert("Select a folder for permanent inventory storage");
-                const folderHandle = await window.showDirectoryPicker();
-                const permission = await folderHandle.requestPermission({ mode:"readwrite" });
-                if(permission !== "granted"){ alert("Folder permission denied"); return; }
-                this.folderHandle = folderHandle;
-                await new Promise((resolve,reject)=>{
-                    const tx = db.transaction("folders","readwrite");
-                    const store = tx.objectStore("folders");
-                    const req = store.put(folderHandle, "inventoryFolder");
-                    req.onsuccess = ()=> resolve(); req.onerror = ()=> reject(req.error);
-                });
-            } catch(err){ console.error(err); alert("Storage initialization failed"); }
+    
+                console.log("Folder saved");
+    
+            }catch(err){
+    
+                console.error(err);
+    
+                alert("Storage initialization failed");
+            }
         },
+    
+        // ======================================
+        // LOAD FILES
+        // ======================================
+    
         async loadDeviceFiles(){
+    
             try{
+    
                 if(!this.folderHandle) return;
-                const productsHandle = await this.folderHandle.getFileHandle("products.json",{create:true});
-                const productsFile = await productsHandle.getFile();
-                const productsText = await productsFile.text();
-                this.memory.products = productsText ? JSON.parse(productsText) : [];
-                const transactionsHandle = await this.folderHandle.getFileHandle("transactions.json",{create:true});
-                const transactionsFile = await transactionsHandle.getFile();
-                const transactionsText = await transactionsFile.text();
-                this.memory.transactions = transactionsText ? JSON.parse(transactionsText) : [];
-                if(!Array.isArray(this.memory.products)) this.memory.products = [];
-                if(!Array.isArray(this.memory.transactions)) this.memory.transactions = [];
-            } catch(err){ console.error(err); this.memory.products = []; this.memory.transactions = []; }
+    
+                // PRODUCTS
+                const productsHandle =
+                    await this.folderHandle.getFileHandle(
+                        "products.json",
+                        {create:true}
+                    );
+    
+                const productsFile =
+                    await productsHandle.getFile();
+    
+                const productsText =
+                    await productsFile.text();
+    
+                this.memory.products =
+                    productsText
+                        ? JSON.parse(productsText)
+                        : [];
+    
+                // TRANSACTIONS
+                const transactionsHandle =
+                    await this.folderHandle.getFileHandle(
+                        "transactions.json",
+                        {create:true}
+                    );
+    
+                const transactionsFile =
+                    await transactionsHandle.getFile();
+    
+                const transactionsText =
+                    await transactionsFile.text();
+    
+                this.memory.transactions =
+                    transactionsText
+                        ? JSON.parse(transactionsText)
+                        : [];
+    
+                if(!Array.isArray(this.memory.products)){
+    
+                    this.memory.products = [];
+                }
+    
+                if(!Array.isArray(this.memory.transactions)){
+    
+                    this.memory.transactions = [];
+                }
+    
+            }catch(err){
+    
+                console.error(err);
+    
+                this.memory.products = [];
+                this.memory.transactions = [];
+            }
         },
+    
+        // ======================================
+        // SAVE FILES
+        // ======================================
+    
         async saveDeviceFiles(){
+    
             try{
+    
                 if(!this.folderHandle) return;
-                const productsHandle = await this.folderHandle.getFileHandle("products.json",{create:true});
-                const writable1 = await productsHandle.createWritable();
-                await writable1.write(JSON.stringify(this.memory.products, null, 2));
+    
+                // PRODUCTS
+                const productsHandle =
+                    await this.folderHandle.getFileHandle(
+                        "products.json",
+                        {create:true}
+                    );
+    
+                const writable1 =
+                    await productsHandle.createWritable();
+    
+                await writable1.write(
+                    JSON.stringify(
+                        this.memory.products,
+                        null,
+                        2
+                    )
+                );
+    
                 await writable1.close();
-                const transactionsHandle = await this.folderHandle.getFileHandle("transactions.json",{create:true});
-                const writable2 = await transactionsHandle.createWritable();
-                await writable2.write(JSON.stringify(this.memory.transactions, null, 2));
+    
+                // TRANSACTIONS
+                const transactionsHandle =
+                    await this.folderHandle.getFileHandle(
+                        "transactions.json",
+                        {create:true}
+                    );
+    
+                const writable2 =
+                    await transactionsHandle.createWritable();
+    
+                await writable2.write(
+                    JSON.stringify(
+                        this.memory.transactions,
+                        null,
+                        2
+                    )
+                );
+    
                 await writable2.close();
-            } catch(err){ console.error(err); }
+    
+                console.log("Saved");
+    
+            }catch(err){
+    
+                console.error(err);
+            }
         },
+    
         ensureMigration(){
+    
             let changed = false;
-            this.memory.products.forEach(p=>{ if(!p.unitType){ p.unitType = "Pcs"; changed = true; } });
-            if(changed) this.saveDeviceFiles();
+    
+            this.memory.products.forEach(p=>{
+    
+                if(!p.unitType){
+    
+                    p.unitType = "Pcs";
+    
+                    changed = true;
+                }
+            });
+    
+            if(changed){
+    
+                this.saveDeviceFiles();
+            }
         },
+    
+        // ======================================
+        // CLOUD
+        // ======================================
+    
         async loadFromCloud(){
+    
             try{
-                const productsResponse = await fetch(`${API_URL}?action=getProducts`);
-                const transactionsResponse = await fetch(`${API_URL}?action=getTransactions&limit=200`);
-                this.memory.products = await productsResponse.json();
-                this.memory.transactions = await transactionsResponse.json();
-            } catch(err){ console.error(err); this.memory.products = []; this.memory.transactions = []; }
+    
+                const productsResponse =
+                    await fetch(
+                        `${API_URL}?action=getProducts`
+                    );
+    
+                const transactionsResponse =
+                    await fetch(
+                        `${API_URL}?action=getTransactions&limit=200`
+                    );
+    
+                this.memory.products =
+                    await productsResponse.json();
+    
+                this.memory.transactions =
+                    await transactionsResponse.json();
+    
+            }catch(err){
+    
+                console.error(err);
+    
+                this.memory.products = [];
+                this.memory.transactions = [];
+            }
         },
+    
         async syncToCloud(){
+    
             if(MODE !== "admin") return;
+    
             try{
-                await fetch(API_URL,{ method:"POST", body:JSON.stringify({ action:"syncAll", data:{ products:this.memory.products, transactions:this.memory.transactions } }) });
-            } catch(err){ console.error(err); }
+    
+                await fetch(API_URL,{
+    
+                    method:"POST",
+    
+                    body:JSON.stringify({
+    
+                        action:"syncAll",
+    
+                        data:{
+                            products:this.memory.products,
+                            transactions:this.memory.transactions
+                        }
+    
+                    })
+                });
+    
+            }catch(err){
+    
+                console.error(err);
+            }
         },
+    
         async addTransaction(transaction){
+    
             this.memory.transactions.unshift(transaction);
-            if(this.memory.transactions.length > 500) this.memory.transactions = this.memory.transactions.slice(0,500);
+    
+            if(this.memory.transactions.length > 500){
+    
+                this.memory.transactions =
+                    this.memory.transactions.slice(0,500);
+            }
+    
             await this.saveDeviceFiles();
         }
     };
-    window.addEventListener("beforeunload", async ()=>{ await InventoryDB.saveDeviceFiles(); });
-    setInterval(async ()=>{ if(MODE === "admin") await InventoryDB.syncToCloud(); }, 12000);
-
-    function generateId(){ return crypto.randomUUID(); }
-    function getStatus(qty,min){ if(qty === 0) return "critical"; if(qty <= min) return "low"; return "normal"; }
-
-    async function addProductHandler(){
-        if(MODE !== "admin") return;
-        const name = document.getElementById("name").value.trim();
-        const size = document.getElementById("size").value.trim();
-        const unitType = document.getElementById("unitTypeSelect").value;
-        let quantity = Number(document.getElementById("quantity").value);
-        let minStock = Number(document.getElementById("minStock").value);
-        if(!name){ alert("Product name required"); return; }
-        if(isNaN(quantity)) quantity = 0;
-        if(isNaN(minStock)) minStock = 5;
-        const newProduct = { id:generateId(), name, size:size || "Standard", unitType, quantity, minStock, createdAt:new Date().toISOString(), updatedAt:new Date().toISOString() };
-        InventoryDB.memory.products.unshift(newProduct);
-        await InventoryDB.addTransaction({ id:generateId(), productId:newProduct.id, productName:newProduct.name, type:"initial", quantity:newProduct.quantity, previousStock:0, newStock:newProduct.quantity, date:new Date().toLocaleString() });
+    
+    // ======================================
+    // AUTO SAVE BEFORE CLOSE
+    // ======================================
+    
+    window.addEventListener("beforeunload", async ()=>{
+    
         await InventoryDB.saveDeviceFiles();
-        renderProducts(); renderTransactions(); renderStats();
+    });
+    
+    // ======================================
+    // AUTO CLOUD SYNC
+    // ======================================
+    
+    setInterval(async ()=>{
+    
+        if(MODE === "admin"){
+    
+            await InventoryDB.syncToCloud();
+        }
+    
+    },12000);
+    
+    // ======================================
+    // HELPERS
+    // ======================================
+    
+    function generateId(){
+    
+        return crypto.randomUUID();
+    }
+    
+    function getStatus(qty,min){
+    
+        if(qty === 0) return "critical";
+    
+        if(qty <= min) return "low";
+    
+        return "normal";
+    }
+    
+    // ======================================
+    // ADD PRODUCT
+    // ======================================
+    
+    async function addProductHandler(){
+    
+        if(MODE !== "admin") return;
+    
+        const name =
+            document.getElementById("name").value.trim();
+    
+        const size =
+            document.getElementById("size").value.trim();
+    
+        const unitType =
+            document.getElementById("unitTypeSelect").value;
+    
+        let quantity =
+            Number(document.getElementById("quantity").value);
+    
+        let minStock =
+            Number(document.getElementById("minStock").value);
+    
+        if(!name){
+    
+            alert("Product name required");
+    
+            return;
+        }
+    
+        if(isNaN(quantity)) quantity = 0;
+    
+        if(isNaN(minStock)) minStock = 5;
+    
+        const newProduct = {
+    
+            id:generateId(),
+    
+            name,
+    
+            size:size || "Standard",
+    
+            unitType,
+    
+            quantity,
+    
+            minStock,
+    
+            createdAt:new Date().toISOString(),
+    
+            updatedAt:new Date().toISOString()
+        };
+    
+        InventoryDB.memory.products.unshift(newProduct);
+    
+        await InventoryDB.addTransaction({
+    
+            id:generateId(),
+    
+            productId:newProduct.id,
+    
+            productName:newProduct.name,
+    
+            type:"initial",
+    
+            quantity:newProduct.quantity,
+    
+            previousStock:0,
+    
+            newStock:newProduct.quantity,
+    
+            date:new Date().toLocaleString()
+        });
+    
+        await InventoryDB.saveDeviceFiles();
+    
+        renderProducts();
+        renderTransactions();
+        renderStats();
+    
         clearForm();
     }
+    
     function clearForm(){
+    
         document.getElementById("name").value = "";
         document.getElementById("size").value = "";
         document.getElementById("quantity").value = "";
         document.getElementById("minStock").value = "";
     }
+    
+    // ======================================
+    // STOCK OPERATIONS
+    // ======================================
+    
     async function changeStock(id,action){
+    
         if(MODE !== "admin") return;
-        const product = InventoryDB.memory.products.find(p=>p.id===id);
+    
+        const product =
+            InventoryDB.memory.products.find(
+                p=>p.id===id
+            );
+    
         if(!product) return;
-        const qty = Number(prompt("Enter quantity"));
+    
+        const qty =
+            Number(prompt("Enter quantity"));
+    
         if(isNaN(qty) || qty <= 0) return;
+    
         const previous = product.quantity;
-        if(action === "add") product.quantity += qty;
-        else { if(qty > product.quantity){ alert("Insufficient stock"); return; } product.quantity -= qty; }
+    
+        if(action === "add"){
+    
+            product.quantity += qty;
+    
+        }else{
+    
+            if(qty > product.quantity){
+    
+                alert("Insufficient stock");
+    
+                return;
+            }
+    
+            product.quantity -= qty;
+        }
+    
         product.updatedAt = new Date().toISOString();
-        await InventoryDB.addTransaction({ id:generateId(), productId:product.id, productName:product.name, type:action, quantity:qty, previousStock:previous, newStock:product.quantity, date:new Date().toLocaleString() });
+    
+        await InventoryDB.addTransaction({
+    
+            id:generateId(),
+    
+            productId:product.id,
+    
+            productName:product.name,
+    
+            type:action,
+    
+            quantity:qty,
+    
+            previousStock:previous,
+    
+            newStock:product.quantity,
+    
+            date:new Date().toLocaleString()
+        });
+    
         await InventoryDB.saveDeviceFiles();
-        renderProducts(); renderTransactions(); renderStats();
+    
+        renderProducts();
+        renderTransactions();
+        renderStats();
     }
+    
+    // ======================================
+    // EDIT
+    // ======================================
+    
     async function editProduct(id){
+    
         if(MODE !== "admin") return;
-        const product = InventoryDB.memory.products.find(p=>p.id===id);
+    
+        const product =
+            InventoryDB.memory.products.find(
+                p=>p.id===id
+            );
+    
         if(!product) return;
-        const newName = prompt("Product Name",product.name);
+    
+        const newName =
+            prompt("Product Name",product.name);
+    
         if(!newName) return;
-        const newQty = Number(prompt("Quantity",product.quantity));
-        const newMin = Number(prompt("Min Stock",product.minStock));
-        product.name = newName; product.quantity = newQty; product.minStock = newMin;
+    
+        const newQty =
+            Number(prompt("Quantity",product.quantity));
+    
+        const newMin =
+            Number(prompt("Min Stock",product.minStock));
+    
+        product.name = newName;
+        product.quantity = newQty;
+        product.minStock = newMin;
+    
         product.updatedAt = new Date().toISOString();
+    
         await InventoryDB.saveDeviceFiles();
-        renderProducts(); renderStats();
+    
+        renderProducts();
+        renderStats();
     }
+    
+    // ======================================
+    // DELETE
+    // ======================================
+    
     async function deleteProduct(id){
+    
         if(MODE !== "admin") return;
+    
         if(!confirm("Delete product?")) return;
-        InventoryDB.memory.products = InventoryDB.memory.products.filter(p=>p.id!==id);
+    
+        InventoryDB.memory.products =
+            InventoryDB.memory.products.filter(
+                p=>p.id!==id
+            );
+    
         await InventoryDB.saveDeviceFiles();
-        renderProducts(); renderStats();
+    
+        renderProducts();
+        renderStats();
     }
-
-    // RENDER WITH FILTERS
+    
+    // ======================================
+    // RENDER PRODUCTS
+    // ======================================
+    
     function renderProducts(){
-        const tbody = document.getElementById("productTable");
-        if(!tbody) return;
-        let filtered = [...InventoryDB.memory.products];
-        // Apply search filter (name or size)
-        if(currentProductFilter.search){
-            filtered = filtered.filter(p => p.name.toLowerCase().includes(currentProductFilter.search) || p.size.toLowerCase().includes(currentProductFilter.search));
-        }
-        // Apply status filter
-        if(currentProductFilter.status !== "all"){
-            filtered = filtered.filter(p => getStatus(p.quantity, p.minStock) === currentProductFilter.status);
-        }
+    
+        const tbody =
+            document.getElementById("productTable");
+    
         tbody.innerHTML = "";
-        filtered.forEach(product => {
-            const status = getStatus(product.quantity, product.minStock);
-            tbody.innerHTML += `<tr>
-                <td>${escapeHtml(product.name)}</td>
-                <td>${escapeHtml(product.size)}</td>
+    
+        InventoryDB.memory.products.forEach(product=>{
+    
+            const status =
+                getStatus(
+                    product.quantity,
+                    product.minStock
+                );
+    
+            tbody.innerHTML += `
+            <tr>
+    
+                <td>${product.name}</td>
+                <td>${product.size}</td>
                 <td>${product.unitType}</td>
                 <td>${product.quantity}</td>
                 <td>${product.minStock}</td>
-                <td class="${status}">${status.toUpperCase()}</td>
-                <td>${MODE === "admin" ? `<div class="actions"><button onclick="changeStock('${product.id}','add')">+</button><button onclick="changeStock('${product.id}','remove')">-</button><button onclick="editProduct('${product.id}')">Edit</button><button onclick="deleteProduct('${product.id}')">Delete</button></div>` : `View Only`}
+    
+                <td class="${status}">
+                    ${status.toUpperCase()}
                 </td>
-            </tr>`;
+    
+                <td>
+    
+                    ${
+                        MODE === "admin"
+    
+                        ?
+    
+                        `
+                        <div class="actions">
+    
+                            <button onclick="changeStock('${product.id}','add')">+</button>
+    
+                            <button onclick="changeStock('${product.id}','remove')">-</button>
+    
+                            <button onclick="editProduct('${product.id}')">Edit</button>
+    
+                            <button onclick="deleteProduct('${product.id}')">Delete</button>
+    
+                        </div>
+                        `
+    
+                        :
+    
+                        `View Only`
+                    }
+    
+                </td>
+    
+            </tr>
+            `;
         });
-        if(filtered.length === 0) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No products found</td></tr>';
     }
-
+    
+    // ======================================
+    // RENDER TRANSACTIONS
+    // ======================================
+    
     function renderTransactions(){
-        const tbody = document.getElementById("transactionTable");
-        if(!tbody) return;
-        let filtered = [...InventoryDB.memory.transactions];
-        if(currentTransactionFilter.search){
-            filtered = filtered.filter(t => t.productName.toLowerCase().includes(currentTransactionFilter.search));
-        }
-        if(currentTransactionFilter.type !== "all"){
-            filtered = filtered.filter(t => t.type === currentTransactionFilter.type);
-        }
+    
+        const tbody =
+            document.getElementById("transactionTable");
+    
         tbody.innerHTML = "";
-        filtered.forEach(t => {
-            tbody.innerHTML += `<tr>
-                <td>${escapeHtml(t.productName)}</td>
-                <td>${t.type === 'add' ? '➕ Add' : (t.type === 'remove' ? '➖ Remove' : '📦 Initial')}</td>
+    
+        InventoryDB.memory.transactions.forEach(t=>{
+    
+            tbody.innerHTML += `
+            <tr>
+    
+                <td>${t.productName}</td>
+                <td>${t.type}</td>
                 <td>${t.quantity}</td>
                 <td>${t.previousStock}</td>
                 <td>${t.newStock}</td>
                 <td>${t.date}</td>
-            </tr>`;
+    
+            </tr>
+            `;
         });
-        if(filtered.length === 0) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No transactions found</td></tr>';
     }
-
+    
+    // ======================================
+    // STATS
+    // ======================================
+    
     function renderStats(){
-        const products = InventoryDB.memory.products;
-        let totalStock = 0, lowStock = 0, critical = 0;
-        products.forEach(p=>{ totalStock += p.quantity; if(p.quantity <= p.minStock) lowStock++; if(p.quantity === 0) critical++; });
+    
+        const products =
+            InventoryDB.memory.products;
+    
+        let totalStock = 0;
+        let lowStock = 0;
+        let critical = 0;
+    
+        products.forEach(p=>{
+    
+            totalStock += p.quantity;
+    
+            if(p.quantity <= p.minStock){
+                lowStock++;
+            }
+    
+            if(p.quantity === 0){
+                critical++;
+            }
+        });
+    
         document.getElementById("stats").innerHTML = `
-            <div class="stat-box"><h3>Total Products</h3><h2>${products.length}</h2></div>
-            <div class="stat-box"><h3>Total Stock</h3><h2>${totalStock}</h2></div>
-            <div class="stat-box"><h3>Low Stock</h3><h2>${lowStock}</h2></div>
-            <div class="stat-box"><h3>Critical</h3><h2>${critical}</h2></div>
+    
+        <div class="stat-box">
+            <h3>Total Products</h3>
+            <h2>${products.length}</h2>
+        </div>
+    
+        <div class="stat-box">
+            <h3>Total Stock</h3>
+            <h2>${totalStock}</h2>
+        </div>
+    
+        <div class="stat-box">
+            <h3>Low Stock</h3>
+            <h2>${lowStock}</h2>
+        </div>
+    
+        <div class="stat-box">
+            <h3>Critical</h3>
+            <h2>${critical}</h2>
+        </div>
         `;
     }
+    
+    </script>
 
-    function escapeHtml(str){
-        if(!str) return '';
-        return str.replace(/[&<>]/g, function(m){
-            if(m === '&') return '&amp;';
-            if(m === '<') return '&lt;';
-            if(m === '>') return '&gt;';
-            return m;
-        });
-    }
-</script>
 </body>
 </html>
