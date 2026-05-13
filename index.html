@@ -697,142 +697,165 @@ tr:hover{
 
         async initializeDeviceStorage(){
 
-            // iPhone / Safari fallback
-            if (!window.showDirectoryPicker) {
-
-                console.log(
-                    "File System Access API not supported"
+            // Detect iPhone / iPad
+            const isIOS =
+                /iPad|iPhone|iPod/.test(navigator.userAgent)
+                || (
+                    navigator.platform === 'MacIntel'
+                    && navigator.maxTouchPoints > 1
                 );
-
+        
+            // ============================
+            // IOS FALLBACK
+            // ============================
+        
+            if(isIOS){
+        
+                console.log("iOS detected → using localStorage");
+        
                 this.folderHandle = null;
-
+        
                 const savedProducts =
                     localStorage.getItem(
                         "inventory-products"
                     );
-
+        
                 const savedTransactions =
                     localStorage.getItem(
                         "inventory-transactions"
                     );
-
+        
                 this.memory.products =
                     savedProducts
                         ? JSON.parse(savedProducts)
                         : [];
-
+        
                 this.memory.transactions =
                     savedTransactions
                         ? JSON.parse(savedTransactions)
                         : [];
-
+        
                 return;
             }
-
+        
+            // ============================
+            // ANDROID / DESKTOP STORAGE
+            // ============================
+        
             try{
-
+        
+                // Browser unsupported
+                if(!window.showDirectoryPicker){
+        
+                    alert(
+                        "Your browser does not support device folder storage."
+                    );
+        
+                    return;
+                }
+        
                 const db = await this.openDB();
-
-                // RESTORE SAVED HANDLE
+        
+                // RESTORE EXISTING HANDLE
                 const savedHandle =
                     await new Promise((resolve,reject)=>{
-
+        
                         const tx =
                             db.transaction(
                                 "folders",
                                 "readonly"
                             );
-
+        
                         const store =
                             tx.objectStore("folders");
-
+        
                         const req =
                             store.get("inventoryFolder");
-
+        
                         req.onsuccess =
                             ()=> resolve(req.result);
-
+        
                         req.onerror =
                             ()=> reject(req.error);
                     });
-
-                // HANDLE EXISTS
+        
+                // EXISTING FOLDER
                 if(savedHandle){
-
+        
                     let permission =
                         await savedHandle.queryPermission({
                             mode:"readwrite"
                         });
-
+        
                     if(permission !== "granted"){
-
+        
                         permission =
                             await savedHandle.requestPermission({
                                 mode:"readwrite"
                             });
                     }
-
+        
                     if(permission === "granted"){
-
+        
                         this.folderHandle = savedHandle;
-
+        
                         console.log("Folder restored");
-
+        
                         return;
                     }
                 }
-
-                // FIRST TIME
+        
+                // FIRST TIME SELECT
                 alert(
                     "Select a folder for permanent inventory storage"
                 );
-
+        
                 const folderHandle =
                     await window.showDirectoryPicker();
-
+        
                 const permission =
                     await folderHandle.requestPermission({
                         mode:"readwrite"
                     });
-
+        
                 if(permission !== "granted"){
-
+        
                     alert("Folder permission denied");
-
+        
                     return;
                 }
-
+        
                 this.folderHandle = folderHandle;
-
+        
                 // SAVE HANDLE
                 await new Promise((resolve,reject)=>{
-
+        
                     const tx =
                         db.transaction(
                             "folders",
                             "readwrite"
                         );
-
+        
                     const store =
                         tx.objectStore("folders");
-
+        
                     const req =
                         store.put(
                             folderHandle,
                             "inventoryFolder"
                         );
-
+        
                     req.onsuccess = ()=> resolve();
-
+        
                     req.onerror = ()=> reject(req.error);
                 });
-
+        
                 console.log("Folder saved");
-
+        
             }catch(err){
-
+        
                 console.error(err);
-
+        
                 alert("Storage initialization failed");
             }
         },
