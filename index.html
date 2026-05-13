@@ -5,544 +5,428 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Inventory Management System | Device Storage Edition</title>
 
-<style>/* Inventory Management System - Enhanced Premium Stylesheet */
-/* Elegant Sage Green & Cream Palette with Modern Touches */
+<style>
+
+/* Inventory Management System - Enhanced Premium Stylesheet */
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-body {
-    font-family: 'Poppins', 'Playfair Display', serif;
-    background: linear-gradient(135deg, #F2EDE4 0%, #E8E0D4 100%);
-    overflow-x: hidden;
-    min-height: 100vh;
-    padding: 20px;
+body{
+    font-family:'Poppins','Playfair Display',serif;
+    background:linear-gradient(135deg,#F2EDE4 0%,#E8E0D4 100%);
+    overflow-x:hidden;
+    min-height:100vh;
+    padding:20px;
 }
 
-/* ==================== COLOR VARIABLES ==================== */
-:root {
-    --orthiva-sage: #9BB875;
-    --orthiva-sage-light: #C2DF8E;
-    --orthiva-sage-dark: #7A9B58;
-    --orthiva-cream: #F2EDE4;
-    --orthiva-cream-light: #F9F7F2;
-    --orthiva-cream-dark: #E0D8CA;
-    --orthiva-blue: #3A7BD5;
-    --orthiva-wa: #25D366;
-    --orthiva-navy: #1A2C3C;
-    --orthiva-text-dark: #2C3E2F;
-    --orthiva-text-light: #6B7B6B;
-    --white: #FFFFFF;
-    --gold: #D4AF37;
-    --gold-light: #E8C84A;
-    --red: #E74C3C;
-    --red-light: #FF6B6B;
-    --green: #27AE60;
-    --green-light: #58D68D;
-    --orange: #F39C12;
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
-    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
-    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    --transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    --transition-fast: all 0.2s ease;
+:root{
+    --orthiva-sage:#9BB875;
+    --orthiva-sage-light:#C2DF8E;
+    --orthiva-sage-dark:#7A9B58;
+    --orthiva-cream:#F2EDE4;
+    --orthiva-cream-light:#F9F7F2;
+    --orthiva-cream-dark:#E0D8CA;
+    --orthiva-text-dark:#2C3E2F;
+    --orthiva-text-light:#6B7B6B;
+    --white:#FFFFFF;
+    --green:#27AE60;
+    --orange:#F39C12;
+    --red:#E74C3C;
+    --shadow-sm:0 2px 8px rgba(0,0,0,0.05);
+    --shadow-md:0 5px 20px rgba(0,0,0,0.08);
+    --shadow-lg:0 10px 30px rgba(0,0,0,0.12);
+    --shadow-xl:0 20px 40px rgba(0,0,0,0.15);
+    --transition:all 0.4s cubic-bezier(0.2,0.9,0.4,1.1);
+    --transition-fast:all 0.2s ease;
 }
 
-/* ==================== CONTAINER ==================== */
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 24px;
+.container{
+    max-width:1400px;
+    margin:0 auto;
+    padding:0 24px;
 }
 
-/* ==================== LOGIN SCREEN ==================== */
-#loginScreen {
-    max-width: 420px;
-    margin: 100px auto;
-    animation: fadeInUp 0.6s ease-out;
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(155, 184, 117, 0.2);
+#loginScreen{
+    max-width:420px;
+    margin:100px auto;
+    animation:fadeInUp 0.6s ease-out;
+    background:rgba(255,255,255,0.98);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(155,184,117,0.2);
 }
 
-/* ==================== CARDS ==================== */
-.card {
-    background: var(--white);
-    padding: 28px;
-    border-radius: 28px;
-    margin-bottom: 24px;
-    box-shadow: var(--shadow-md);
-    transition: var(--transition);
-    border: 1px solid rgba(155, 184, 117, 0.1);
-    position: relative;
-    overflow: hidden;
+.card{
+    background:var(--white);
+    padding:28px;
+    border-radius:28px;
+    margin-bottom:24px;
+    box-shadow:var(--shadow-md);
+    transition:var(--transition);
+    border:1px solid rgba(155,184,117,0.1);
+    position:relative;
+    overflow:hidden;
 }
 
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--orthiva-sage), var(--orthiva-sage-light), var(--orthiva-sage));
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
+.card::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:4px;
+    background:linear-gradient(
+        90deg,
+        var(--orthiva-sage),
+        var(--orthiva-sage-light),
+        var(--orthiva-sage)
+    );
+    transform:scaleX(0);
+    transition:transform 0.4s ease;
 }
 
-.card:hover::before {
-    transform: scaleX(1);
+.card:hover::before{
+    transform:scaleX(1);
 }
 
-.card:hover {
-    box-shadow: var(--shadow-xl);
-    transform: translateY(-4px);
-    border-color: rgba(155, 184, 117, 0.2);
+.card:hover{
+    box-shadow:var(--shadow-xl);
+    transform:translateY(-4px);
 }
 
-/* ==================== TABS STYLES ==================== */
-.tabs-header {
-    display: flex;
-    background: var(--orthiva-cream-light);
-    border-bottom: 2px solid var(--orthiva-cream-dark);
-    gap: 4px;
-    padding: 8px 16px 0 16px;
-    border-radius: 28px 28px 0 0;
+.tabs-header{
+    display:flex;
+    background:var(--orthiva-cream-light);
+    border-bottom:2px solid var(--orthiva-cream-dark);
+    gap:4px;
+    padding:8px 16px 0 16px;
+    border-radius:28px 28px 0 0;
 }
 
-.tab-btn {
-    background: transparent;
-    padding: 14px 28px;
-    border-radius: 60px 60px 0 0;
-    font-weight: 600;
-    font-size: 15px;
-    letter-spacing: 0.5px;
-    color: var(--orthiva-text-light);
-    cursor: pointer;
-    transition: var(--transition-fast);
-    width: auto;
-    box-shadow: none;
-    position: relative;
+.tab-btn{
+    background:transparent;
+    padding:14px 28px;
+    border-radius:60px 60px 0 0;
+    font-weight:600;
+    font-size:15px;
+    color:var(--orthiva-text-light);
+    cursor:pointer;
+    transition:var(--transition-fast);
+    width:auto;
+    border:none;
 }
 
-.tab-btn::before {
-    display: none;
+.tab-btn.active{
+    background:var(--white);
+    color:var(--orthiva-sage-dark);
+    border-bottom:3px solid var(--orthiva-sage);
 }
 
-.tab-btn:hover {
-    background: rgba(155, 184, 117, 0.1);
-    transform: translateY(-2px);
-    color: var(--orthiva-text-dark);
+.tab-pane{
+    display:none;
+    padding:24px;
+    animation:fadeInUp 0.4s ease-out;
+    background:var(--white);
+    border-radius:0 0 28px 28px;
 }
 
-.tab-btn.active {
-    background: var(--white);
-    color: var(--orthiva-sage-dark);
-    border-bottom: 3px solid var(--orthiva-sage);
+.tab-pane.active{
+    display:block;
 }
 
-.tab-pane {
-    display: none;
-    padding: 24px;
-    animation: fadeInUp 0.4s ease-out;
-    background: var(--white);
-    border-radius: 0 0 28px 28px;
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+    align-items:end;
 }
 
-.tab-pane.active {
-    display: block;
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+    margin-bottom:24px;
 }
 
-/* ==================== GRID SYSTEM ==================== */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 18px;
-    align-items: end;
+.stat-box{
+    background:linear-gradient(
+        135deg,
+        var(--white) 0%,
+        var(--orthiva-cream-light) 100%
+    );
+    padding:24px;
+    border-radius:24px;
+    box-shadow:var(--shadow-sm);
+    text-align:center;
+    border-left:4px solid var(--orthiva-sage);
 }
 
-.stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 24px;
+.stat-box h3{
+    color:var(--orthiva-text-light);
+    font-size:13px;
+    margin-bottom:10px;
 }
 
-/* ==================== STAT BOXES ==================== */
-.stat-box {
-    background: linear-gradient(135deg, var(--white) 0%, var(--orthiva-cream-light) 100%);
-    padding: 24px;
-    border-radius: 24px;
-    box-shadow: var(--shadow-sm);
-    text-align: center;
-    border-left: 4px solid var(--orthiva-sage);
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
+.stat-box h2{
+    font-size:36px;
+    color:var(--orthiva-text-dark);
 }
 
-.stat-box::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--orthiva-sage), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.6s ease;
+input,select,button{
+    width:100%;
+    padding:12px 18px;
+    border-radius:60px;
+    border:2px solid var(--orthiva-cream-dark);
+    background:var(--white);
+    font-size:14px;
+    transition:var(--transition-fast);
+    outline:none;
+    font-family:'Poppins',sans-serif;
 }
 
-.stat-box:hover::after {
-    transform: translateX(0);
+input:focus,select:focus{
+    border-color:var(--orthiva-sage);
+    box-shadow:0 0 0 4px rgba(155,184,117,0.15);
 }
 
-.stat-box:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-lg);
+button{
+    background:linear-gradient(
+        135deg,
+        var(--orthiva-sage),
+        var(--orthiva-sage-dark)
+    );
+    color:var(--orthiva-text-dark);
+    border:none;
+    cursor:pointer;
+    font-weight:600;
 }
 
-.stat-box h3 {
-    color: var(--orthiva-text-light);
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 10px;
+button:hover{
+    transform:translateY(-2px);
 }
 
-.stat-box h2 {
-    font-size: 36px;
-    margin: 0;
-    color: var(--orthiva-text-dark);
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--orthiva-text-dark), var(--orthiva-sage-dark));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+table{
+    width:100%;
+    border-collapse:collapse;
 }
 
-/* ==================== FORM ELEMENTS ==================== */
-input, select, button {
-    width: 100%;
-    padding: 12px 18px;
-    border-radius: 60px;
-    border: 2px solid var(--orthiva-cream-dark);
-    background: var(--white);
-    font-size: 14px;
-    transition: var(--transition-fast);
-    outline: none;
-    font-family: 'Poppins', sans-serif;
+th,td{
+    padding:14px 16px;
+    border-bottom:1px solid var(--orthiva-cream-dark);
+    text-align:left;
 }
 
-input:hover, select:hover {
-    border-color: var(--orthiva-sage-light);
+th{
+    background:linear-gradient(
+        135deg,
+        var(--orthiva-sage),
+        var(--orthiva-sage-dark)
+    );
+    color:var(--orthiva-text-dark);
 }
 
-input:focus, select:focus {
-    border-color: var(--orthiva-sage);
-    box-shadow: 0 0 0 4px rgba(155, 184, 117, 0.15);
-    transform: translateY(-1px);
+tr:hover{
+    background:var(--orthiva-cream-light);
 }
 
-button {
-    background: linear-gradient(135deg, var(--orthiva-sage), var(--orthiva-sage-dark));
-    color: var(--orthiva-text-dark);
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    position: relative;
-    overflow: hidden;
+.low,.critical,.normal{
+    font-weight:600;
+    border-radius:50px;
+    padding:5px 14px;
+    display:inline-block;
+    font-size:11px;
 }
 
-button::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
+.low{
+    color:var(--orange);
 }
 
-button:hover::before {
-    width: 300px;
-    height: 300px;
+.critical{
+    color:var(--red);
 }
 
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(155, 184, 117, 0.4);
+.normal{
+    color:var(--green);
 }
 
-button:active {
-    transform: translateY(0);
+.actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
 }
 
-/* ==================== TABLES ==================== */
-table {
-    width: 100%;
-    border-collapse: collapse;
+.actions button{
+    width:auto;
+    padding:6px 14px;
+    font-size:11px;
 }
 
-th, td {
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--orthiva-cream-dark);
-    text-align: left;
-    vertical-align: middle;
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+    gap:16px;
 }
 
-th {
-    background: linear-gradient(135deg, var(--orthiva-sage), var(--orthiva-sage-dark));
-    color: var(--orthiva-text-dark);
-    font-weight: 600;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.topbar h1{
+    font-size:32px;
+    font-weight:800;
+    color:var(--orthiva-text-dark);
 }
 
-td {
-    color: var(--orthiva-text-light);
-    font-size: 14px;
-    transition: var(--transition-fast);
+#roleText{
+    padding:8px 22px;
+    border-radius:60px;
+    background:linear-gradient(
+        135deg,
+        var(--orthiva-sage),
+        var(--orthiva-sage-dark)
+    );
+    color:var(--orthiva-text-dark);
+    font-weight:700;
+    font-size:13px;
 }
 
-tr {
-    transition: var(--transition-fast);
+.hidden{
+    display:none;
 }
 
-tr:hover {
-    background: var(--orthiva-cream-light);
-}
-
-/* ==================== STATUS BADGES ==================== */
-.low, .critical, .normal {
-    font-weight: 600;
-    border-radius: 50px;
-    padding: 5px 14px;
-    display: inline-block;
-    font-size: 11px;
-    letter-spacing: 0.5px;
-    transition: var(--transition-fast);
-}
-
-.low {
-    color: var(--orange);
-    background: linear-gradient(135deg, rgba(243, 156, 18, 0.1), rgba(243, 156, 18, 0.05));
-    border-left: 2px solid var(--orange);
-}
-
-.critical {
-    color: var(--red);
-    background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(231, 76, 60, 0.05));
-    border-left: 2px solid var(--red);
-}
-
-.normal {
-    color: var(--green);
-    background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(39, 174, 96, 0.05));
-    border-left: 2px solid var(--green);
-}
-
-/* ==================== ACTION BUTTONS ==================== */
-.actions {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.actions button {
-    padding: 6px 14px;
-    font-size: 11px;
-    font-weight: 600;
-    background: linear-gradient(135deg, var(--orthiva-cream-dark), var(--orthiva-cream));
-    color: var(--orthiva-text-dark);
-    width: auto;
-    box-shadow: var(--shadow-sm);
-}
-
-.actions button:hover {
-    background: linear-gradient(135deg, var(--orthiva-sage), var(--orthiva-sage-dark));
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(155, 184, 117, 0.3);
-}
-
-/* ==================== TOP BAR ==================== */
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 28px;
-    flex-wrap: wrap;
-    gap: 16px;
-    animation: slideInLeft 0.5s ease-out;
-}
-
-.topbar h1 {
-    font-size: 32px;
-    font-weight: 800;
-    color: var(--orthiva-text-dark);
-    font-family: 'Playfair Display', serif;
-    background: linear-gradient(135deg, var(--orthiva-text-dark), var(--orthiva-sage-dark));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -0.5px;
-    margin: 0;
-}
-
-#roleText {
-    padding: 8px 22px;
-    border-radius: 60px;
-    background: linear-gradient(135deg, var(--orthiva-sage), var(--orthiva-sage-dark));
-    color: var(--orthiva-text-dark);
-    font-weight: 700;
-    font-size: 13px;
-    display: inline-block;
-    box-shadow: var(--shadow-sm);
-    letter-spacing: 1px;
-}
-
-/* ==================== HEADINGS ==================== */
-h1, h2, h3 {
-    margin-bottom: 16px;
-    font-weight: 700;
-    color: var(--orthiva-text-dark);
-    font-family: 'Playfair Display', serif;
-}
-
-h2 {
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    letter-spacing: -0.3px;
-}
-
-h2::before {
-    content: '';
-    width: 4px;
-    height: 24px;
-    background: linear-gradient(135deg, var(--orthiva-sage), var(--orthiva-sage-dark));
-    border-radius: 4px;
-}
-
-/* ==================== HIDE CLASS ==================== */
-.hidden {
-    display: none;
-}
-
-/* ==================== ANIMATIONS ==================== */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
+@keyframes fadeInUp{
+    from{
+        opacity:0;
+        transform:translateY(40px);
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    to{
+        opacity:1;
+        transform:translateY(0);
     }
 }
 
-@keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
+@media(max-width:768px){
+
+    body{
+        padding:16px;
     }
-    to {
-        opacity: 1;
-        transform: translateX(0);
+
+    .grid,.stats{
+        grid-template-columns:1fr;
+    }
+
+    .actions{
+        flex-direction:column;
+    }
+
+    .actions button{
+        width:100%;
+    }
+
+    .topbar{
+        flex-direction:column;
+        text-align:center;
     }
 }
 
-.card, .stat-box {
-    animation: fadeInUp 0.5s ease-out;
-}
-
-/* ==================== RESPONSIVE ==================== */
-@media (max-width: 768px) {
-    body { padding: 16px; }
-    .topbar { flex-direction: column; text-align: center; }
-    .grid, .stats { grid-template-columns: 1fr; }
-    th, td { padding: 10px 12px; font-size: 12px; }
-    .actions { flex-direction: column; }
-    .actions button { width: 100%; }
-    .card { padding: 20px; }
-    .topbar h1 { font-size: 26px; }
-    .tab-btn { padding: 10px 16px; font-size: 13px; }
-    .tab-pane { padding: 16px; }
-}
-
-@media (max-width: 480px) {
-    #loginScreen { margin: 60px 20px; }
-    .card { padding: 16px; }
-    .stat-box h2 { font-size: 24px; }
-    .tab-btn { padding: 8px 12px; font-size: 12px; }
-}</style>
+</style>
 </head>
 
 <body>
 
 <!-- LOGIN -->
+
 <div id="loginScreen" class="card">
+
     <h2>Inventory Login</h2>
 
-    <input type="password" id="adminPassword" placeholder="Admin Password">
+    <input
+        type="password"
+        id="adminPassword"
+        placeholder="Admin Password"
+    >
+
     <br><br>
 
-    <button onclick="loginAdmin()">Login As Admin</button>
+    <button onclick="loginAdmin()">
+        Login As Admin
+    </button>
+
     <br><br>
 
-    <button onclick="loginViewer()">Enter As Viewer</button>
+    <button onclick="loginViewer()">
+        Enter As Viewer
+    </button>
+
 </div>
 
 <!-- APP -->
+
 <div id="app" class="hidden">
 
     <div class="topbar">
+
         <h1>Inventory Management</h1>
 
         <div>
+
             <span id="roleText"></span>
 
-            <button onclick="logout()" style="width:auto;">
+            <button
+                onclick="logout()"
+                style="width:auto;"
+            >
                 Logout
             </button>
+
         </div>
+
     </div>
 
     <!-- ADD PRODUCT -->
+
     <div class="card" id="adminPanel">
 
         <h2>Add Product</h2>
 
         <div class="grid">
 
-            <input type="text" id="name" placeholder="Product Name">
+            <input
+                type="text"
+                id="name"
+                placeholder="Product Name"
+            >
 
-            <input type="text" id="size" placeholder="Size">
+            <input
+                type="text"
+                id="size"
+                placeholder="Size"
+            >
 
             <select id="unitTypeSelect">
+
                 <option value="Pcs">Pcs</option>
                 <option value="Meter">Meter</option>
                 <option value="Kg">Kg</option>
                 <option value="Bundle">Bundle</option>
+
             </select>
 
-            <input type="number" id="quantity" placeholder="Quantity">
+            <input
+                type="number"
+                id="quantity"
+                placeholder="Quantity"
+            >
 
-            <input type="number" id="minStock" placeholder="Min Stock">
+            <input
+                type="number"
+                id="minStock"
+                placeholder="Min Stock"
+            >
 
         </div>
 
@@ -555,32 +439,41 @@ h2::before {
     </div>
 
     <!-- STATS -->
+
     <div class="stats" id="stats"></div>
 
     <!-- TABS -->
+
     <div class="card">
 
         <div class="tabs-header">
 
-            <button class="tab-btn active"
-                onclick="switchTab('productsTab', this)">
+            <button
+                class="tab-btn active"
+                onclick="switchTab('productsTab',this)"
+            >
                 Products
             </button>
 
-            <button class="tab-btn"
-                onclick="switchTab('transactionsTab', this)">
+            <button
+                class="tab-btn"
+                onclick="switchTab('transactionsTab',this)"
+            >
                 Transactions
             </button>
 
         </div>
 
-        <!-- PRODUCTS TAB -->
+        <!-- PRODUCTS -->
+
         <div id="productsTab" class="tab-pane active">
 
             <table>
 
                 <thead>
+
                     <tr>
+
                         <th>Name</th>
                         <th>Size</th>
                         <th>Unit</th>
@@ -588,7 +481,9 @@ h2::before {
                         <th>Min</th>
                         <th>Status</th>
                         <th>Actions</th>
+
                     </tr>
+
                 </thead>
 
                 <tbody id="productTable"></tbody>
@@ -597,20 +492,25 @@ h2::before {
 
         </div>
 
-        <!-- TRANSACTION TAB -->
+        <!-- TRANSACTIONS -->
+
         <div id="transactionsTab" class="tab-pane">
 
             <table>
 
                 <thead>
+
                     <tr>
+
                         <th>Product</th>
                         <th>Type</th>
                         <th>Qty</th>
                         <th>Previous</th>
                         <th>New</th>
                         <th>Date</th>
+
                     </tr>
+
                 </thead>
 
                 <tbody id="transactionTable"></tbody>
@@ -625,942 +525,1020 @@ h2::before {
 
 <script>
 
-    // ======================================
-    // CONFIG
-    // ======================================
-    
-    const API_URL =
-    "https://script.google.com/macros/s/AKfycbybZXQt8wUQjFuevaIUGPPUiUpkjOqOUMasdOFNg2xTi6qzySVa88EATdIst1MYhij4vg/exec";
-    
-    const ADMIN_PASSWORD = "admin123";
-    
-    // Restore previous session
-    let MODE = sessionStorage.getItem("inventory-mode") || "viewer";
-    
-    // ======================================
-    // AUTO START SESSION
-    // ======================================
-    
-    window.addEventListener("load", async () => {
-    
-        if(sessionStorage.getItem("inventory-logged") === "true"){
-    
-            document.getElementById("loginScreen")
-                .classList.add("hidden");
-    
-            document.getElementById("app")
-                .classList.remove("hidden");
-    
-            document.getElementById("roleText")
-                .innerText = MODE.toUpperCase();
-    
-            if(MODE === "viewer"){
-    
-                document.getElementById("adminPanel")
-                    .style.display = "none";
-            }
-    
-            await InventoryDB.init();
-        }
-    });
-    
-    // ======================================
-    // LOGIN
-    // ======================================
-    
-    async function loginAdmin(){
-    
-        const password =
-            document.getElementById("adminPassword").value;
-    
-        if(password !== ADMIN_PASSWORD){
-    
-            alert("Wrong Password");
-    
-            return;
-        }
-    
-        MODE = "admin";
-    
-        sessionStorage.setItem("inventory-mode","admin");
-        sessionStorage.setItem("inventory-logged","true");
-    
-        await startApp();
-    }
-    
-    async function loginViewer(){
-    
-        MODE = "viewer";
-    
-        sessionStorage.setItem("inventory-mode","viewer");
-        sessionStorage.setItem("inventory-logged","true");
-    
-        await startApp();
-    }
-    
-    function logout(){
-    
-        sessionStorage.clear();
-    
-        document.getElementById("app")
-            .classList.add("hidden");
-    
-        document.getElementById("loginScreen")
-            .classList.remove("hidden");
-    
-        document.getElementById("adminPassword").value = "";
-    }
-    
-    async function startApp(){
-    
+// ======================================
+// CONFIG
+// ======================================
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbybZXQt8wUQjFuevaIUGPPUiUpkjOqOUMasdOFNg2xTi6qzySVa88EATdIst1MYhij4vg/exec";
+
+const ADMIN_PASSWORD = "admin123";
+
+let MODE =
+    sessionStorage.getItem("inventory-mode")
+    || "viewer";
+
+// ======================================
+// AUTO START
+// ======================================
+
+window.addEventListener("load",async()=>{
+
+    if(sessionStorage.getItem("inventory-logged")==="true"){
+
         document.getElementById("loginScreen")
             .classList.add("hidden");
-    
+
         document.getElementById("app")
             .classList.remove("hidden");
-    
+
         document.getElementById("roleText")
             .innerText = MODE.toUpperCase();
-    
-        if(MODE === "viewer"){
-    
+
+        if(MODE==="viewer"){
+
             document.getElementById("adminPanel")
-                .style.display = "none";
-    
-        }else{
-    
-            document.getElementById("adminPanel")
-                .style.display = "block";
+                .style.display="none";
         }
-    
+
         await InventoryDB.init();
     }
-    
-    // ======================================
-    // TABS
-    // ======================================
-    
-    function switchTab(tabId, btn){
-    
-        document.querySelectorAll(".tab-pane")
-            .forEach(el => el.classList.remove("active"));
-    
-        document.querySelectorAll(".tab-btn")
-            .forEach(el => el.classList.remove("active"));
-    
-        document.getElementById(tabId)
-            .classList.add("active");
-    
-        btn.classList.add("active");
+});
+
+// ======================================
+// LOGIN
+// ======================================
+
+async function loginAdmin(){
+
+    const password =
+        document.getElementById("adminPassword").value;
+
+    if(password !== ADMIN_PASSWORD){
+
+        alert("Wrong Password");
+
+        return;
     }
-    
-    // ======================================
-    // DATABASE
-    // ======================================
-    
-    const InventoryDB = {
-    
-        memory:{
-            products:[],
-            transactions:[]
-        },
-    
-        folderHandle:null,
-    
-        db:null,
-    
-        initialized:false,
-    
-        async init(){
-    
-            if(this.initialized) return;
-    
-            this.initialized = true;
-    
-            if(MODE === "admin"){
-    
-                await this.initializeDeviceStorage();
-    
-                await this.loadDeviceFiles();
-    
-                this.ensureMigration();
-    
-                renderProducts();
-                renderTransactions();
-                renderStats();
-    
-                await this.syncToCloud();
-    
-            }else{
-    
-                await this.loadFromCloud();
-    
-                renderProducts();
-                renderTransactions();
-                renderStats();
-            }
-        },
-    
-        // ======================================
-        // OPEN INDEXED DB
-        // ======================================
-    
-        async openDB(){
-    
-            if(this.db) return this.db;
-    
-            this.db = await new Promise((resolve,reject)=>{
-    
-                const request =
-                    indexedDB.open("InventoryStorageDB",1);
-    
-                request.onupgradeneeded = ()=>{
-    
-                    const db = request.result;
-    
-                    if(!db.objectStoreNames.contains("folders")){
-    
-                        db.createObjectStore("folders");
-                    }
-                };
-    
-                request.onsuccess =
-                    ()=> resolve(request.result);
-    
-                request.onerror =
-                    ()=> reject(request.error);
-            });
-    
-            return this.db;
-        },
-    
-        // ======================================
-        // DEVICE STORAGE
-        // ======================================
-    
-        async initializeDeviceStorage(){
-    
-            try{
-    
-                const db = await this.openDB();
-    
-                // TRY RESTORE
-                const savedHandle =
-                    await new Promise((resolve,reject)=>{
-    
-                        const tx =
-                            db.transaction("folders","readonly");
-    
-                        const store =
-                            tx.objectStore("folders");
-    
-                        const req =
-                            store.get("inventoryFolder");
-    
-                        req.onsuccess =
-                            ()=> resolve(req.result);
-    
-                        req.onerror =
-                            ()=> reject(req.error);
-                    });
-    
-                // HANDLE EXISTS
-                if(savedHandle){
-    
-                    let permission =
-                        await savedHandle.queryPermission({
-                            mode:"readwrite"
-                        });
-    
-                    // ASK ONLY IF NEEDED
-                    if(permission !== "granted"){
-    
-                        permission =
-                            await savedHandle.requestPermission({
-                                mode:"readwrite"
-                            });
-                    }
-    
-                    if(permission === "granted"){
-    
-                        this.folderHandle = savedHandle;
-    
-                        console.log("Folder restored");
-    
-                        return;
-                    }
-                }
-    
-                // ASK FIRST TIME ONLY
-                alert(
-                    "Select a folder for permanent inventory storage"
-                );
-    
-                const folderHandle =
-                    await window.showDirectoryPicker();
-    
-                const permission =
-                    await folderHandle.requestPermission({
-                        mode:"readwrite"
-                    });
-    
-                if(permission !== "granted"){
-    
-                    alert("Folder permission denied");
-    
-                    return;
-                }
-    
-                this.folderHandle = folderHandle;
-    
-                // SAVE HANDLE
-                await new Promise((resolve,reject)=>{
-    
-                    const tx =
-                        db.transaction("folders","readwrite");
-    
-                    const store =
-                        tx.objectStore("folders");
-    
-                    const req =
-                        store.put(
-                            folderHandle,
-                            "inventoryFolder"
-                        );
-    
-                    req.onsuccess = ()=> resolve();
-    
-                    req.onerror = ()=> reject(req.error);
-                });
-    
-                console.log("Folder saved");
-    
-            }catch(err){
-    
-                console.error(err);
-    
-                alert("Storage initialization failed");
-            }
-        },
-    
-        // ======================================
-        // LOAD FILES
-        // ======================================
-    
-        async loadDeviceFiles(){
-    
-            try{
-    
-                if(!this.folderHandle) return;
-    
-                // PRODUCTS
-                const productsHandle =
-                    await this.folderHandle.getFileHandle(
-                        "products.json",
-                        {create:true}
-                    );
-    
-                const productsFile =
-                    await productsHandle.getFile();
-    
-                const productsText =
-                    await productsFile.text();
-    
-                this.memory.products =
-                    productsText
-                        ? JSON.parse(productsText)
-                        : [];
-    
-                // TRANSACTIONS
-                const transactionsHandle =
-                    await this.folderHandle.getFileHandle(
-                        "transactions.json",
-                        {create:true}
-                    );
-    
-                const transactionsFile =
-                    await transactionsHandle.getFile();
-    
-                const transactionsText =
-                    await transactionsFile.text();
-    
-                this.memory.transactions =
-                    transactionsText
-                        ? JSON.parse(transactionsText)
-                        : [];
-    
-                if(!Array.isArray(this.memory.products)){
-    
-                    this.memory.products = [];
-                }
-    
-                if(!Array.isArray(this.memory.transactions)){
-    
-                    this.memory.transactions = [];
-                }
-    
-            }catch(err){
-    
-                console.error(err);
-    
-                this.memory.products = [];
-                this.memory.transactions = [];
-            }
-        },
-    
-        // ======================================
-        // SAVE FILES
-        // ======================================
-    
-        async saveDeviceFiles(){
-    
-            try{
-    
-                if(!this.folderHandle) return;
-    
-                // PRODUCTS
-                const productsHandle =
-                    await this.folderHandle.getFileHandle(
-                        "products.json",
-                        {create:true}
-                    );
-    
-                const writable1 =
-                    await productsHandle.createWritable();
-    
-                await writable1.write(
-                    JSON.stringify(
-                        this.memory.products,
-                        null,
-                        2
-                    )
-                );
-    
-                await writable1.close();
-    
-                // TRANSACTIONS
-                const transactionsHandle =
-                    await this.folderHandle.getFileHandle(
-                        "transactions.json",
-                        {create:true}
-                    );
-    
-                const writable2 =
-                    await transactionsHandle.createWritable();
-    
-                await writable2.write(
-                    JSON.stringify(
-                        this.memory.transactions,
-                        null,
-                        2
-                    )
-                );
-    
-                await writable2.close();
-    
-                console.log("Saved");
-    
-            }catch(err){
-    
-                console.error(err);
-            }
-        },
-    
-        ensureMigration(){
-    
-            let changed = false;
-    
-            this.memory.products.forEach(p=>{
-    
-                if(!p.unitType){
-    
-                    p.unitType = "Pcs";
-    
-                    changed = true;
-                }
-            });
-    
-            if(changed){
-    
-                this.saveDeviceFiles();
-            }
-        },
-    
-        // ======================================
-        // CLOUD
-        // ======================================
-    
-        async loadFromCloud(){
-    
-            try{
-    
-                const productsResponse =
-                    await fetch(
-                        `${API_URL}?action=getProducts`
-                    );
-    
-                const transactionsResponse =
-                    await fetch(
-                        `${API_URL}?action=getTransactions&limit=200`
-                    );
-    
-                this.memory.products =
-                    await productsResponse.json();
-    
-                this.memory.transactions =
-                    await transactionsResponse.json();
-    
-            }catch(err){
-    
-                console.error(err);
-    
-                this.memory.products = [];
-                this.memory.transactions = [];
-            }
-        },
-    
-        async syncToCloud(){
-    
-            if(MODE !== "admin") return;
-    
-            try{
-    
-                await fetch(API_URL,{
-    
-                    method:"POST",
-    
-                    body:JSON.stringify({
-    
-                        action:"syncAll",
-    
-                        data:{
-                            products:this.memory.products,
-                            transactions:this.memory.transactions
-                        }
-    
-                    })
-                });
-    
-            }catch(err){
-    
-                console.error(err);
-            }
-        },
-    
-        async addTransaction(transaction){
-    
-            this.memory.transactions.unshift(transaction);
-    
-            if(this.memory.transactions.length > 500){
-    
-                this.memory.transactions =
-                    this.memory.transactions.slice(0,500);
-            }
-    
-            await this.saveDeviceFiles();
-        }
-    };
-    
-    // ======================================
-    // AUTO SAVE BEFORE CLOSE
-    // ======================================
-    
-    window.addEventListener("beforeunload", async ()=>{
-    
-        await InventoryDB.saveDeviceFiles();
-    });
-    
-    // ======================================
-    // AUTO CLOUD SYNC
-    // ======================================
-    
-    setInterval(async ()=>{
-    
-        if(MODE === "admin"){
-    
-            await InventoryDB.syncToCloud();
-        }
-    
-    },12000);
-    
-    // ======================================
-    // HELPERS
-    // ======================================
-    
-    function generateId(){
-    
-        return crypto.randomUUID();
+
+    MODE = "admin";
+
+    sessionStorage.setItem("inventory-mode","admin");
+    sessionStorage.setItem("inventory-logged","true");
+
+    await startApp();
+}
+
+async function loginViewer(){
+
+    MODE = "viewer";
+
+    sessionStorage.setItem("inventory-mode","viewer");
+    sessionStorage.setItem("inventory-logged","true");
+
+    await startApp();
+}
+
+function logout(){
+
+    sessionStorage.clear();
+
+    document.getElementById("app")
+        .classList.add("hidden");
+
+    document.getElementById("loginScreen")
+        .classList.remove("hidden");
+
+    document.getElementById("adminPassword").value = "";
+}
+
+async function startApp(){
+
+    document.getElementById("loginScreen")
+        .classList.add("hidden");
+
+    document.getElementById("app")
+        .classList.remove("hidden");
+
+    document.getElementById("roleText")
+        .innerText = MODE.toUpperCase();
+
+    if(MODE==="viewer"){
+
+        document.getElementById("adminPanel")
+            .style.display="none";
+
+    }else{
+
+        document.getElementById("adminPanel")
+            .style.display="block";
     }
-    
-    function getStatus(qty,min){
-    
-        if(qty === 0) return "critical";
-    
-        if(qty <= min) return "low";
-    
-        return "normal";
-    }
-    
-    // ======================================
-    // ADD PRODUCT
-    // ======================================
-    
-    async function addProductHandler(){
-    
-        if(MODE !== "admin") return;
-    
-        const name =
-            document.getElementById("name").value.trim();
-    
-        const size =
-            document.getElementById("size").value.trim();
-    
-        const unitType =
-            document.getElementById("unitTypeSelect").value;
-    
-        let quantity =
-            Number(document.getElementById("quantity").value);
-    
-        let minStock =
-            Number(document.getElementById("minStock").value);
-    
-        if(!name){
-    
-            alert("Product name required");
-    
-            return;
-        }
-    
-        if(isNaN(quantity)) quantity = 0;
-    
-        if(isNaN(minStock)) minStock = 5;
-    
-        const newProduct = {
-    
-            id:generateId(),
-    
-            name,
-    
-            size:size || "Standard",
-    
-            unitType,
-    
-            quantity,
-    
-            minStock,
-    
-            createdAt:new Date().toISOString(),
-    
-            updatedAt:new Date().toISOString()
-        };
-    
-        InventoryDB.memory.products.unshift(newProduct);
-    
-        await InventoryDB.addTransaction({
-    
-            id:generateId(),
-    
-            productId:newProduct.id,
-    
-            productName:newProduct.name,
-    
-            type:"initial",
-    
-            quantity:newProduct.quantity,
-    
-            previousStock:0,
-    
-            newStock:newProduct.quantity,
-    
-            date:new Date().toLocaleString()
-        });
-    
-        await InventoryDB.saveDeviceFiles();
-    
-        renderProducts();
-        renderTransactions();
-        renderStats();
-    
-        clearForm();
-    }
-    
-    function clearForm(){
-    
-        document.getElementById("name").value = "";
-        document.getElementById("size").value = "";
-        document.getElementById("quantity").value = "";
-        document.getElementById("minStock").value = "";
-    }
-    
-    // ======================================
-    // STOCK OPERATIONS
-    // ======================================
-    
-    async function changeStock(id,action){
-    
-        if(MODE !== "admin") return;
-    
-        const product =
-            InventoryDB.memory.products.find(
-                p=>p.id===id
-            );
-    
-        if(!product) return;
-    
-        const qty =
-            Number(prompt("Enter quantity"));
-    
-        if(isNaN(qty) || qty <= 0) return;
-    
-        const previous = product.quantity;
-    
-        if(action === "add"){
-    
-            product.quantity += qty;
-    
+
+    await InventoryDB.init();
+}
+
+// ======================================
+// TABS
+// ======================================
+
+function switchTab(tabId,btn){
+
+    document.querySelectorAll(".tab-pane")
+        .forEach(el=>el.classList.remove("active"));
+
+    document.querySelectorAll(".tab-btn")
+        .forEach(el=>el.classList.remove("active"));
+
+    document.getElementById(tabId)
+        .classList.add("active");
+
+    btn.classList.add("active");
+}
+
+// ======================================
+// DATABASE
+// ======================================
+
+const InventoryDB = {
+
+    memory:{
+        products:[],
+        transactions:[]
+    },
+
+    folderHandle:null,
+
+    db:null,
+
+    initialized:false,
+
+    async init(){
+
+        if(this.initialized) return;
+
+        this.initialized = true;
+
+        if(MODE==="admin"){
+
+            await this.initializeDeviceStorage();
+
+            await this.loadDeviceFiles();
+
+            this.ensureMigration();
+
+            renderProducts();
+            renderTransactions();
+            renderStats();
+
+            await this.syncToCloud();
+
         }else{
-    
-            if(qty > product.quantity){
-    
-                alert("Insufficient stock");
-    
+
+            await this.loadFromCloud();
+
+            renderProducts();
+            renderTransactions();
+            renderStats();
+        }
+    },
+
+    async openDB(){
+
+        if(this.db) return this.db;
+
+        this.db = await new Promise((resolve,reject)=>{
+
+            const request =
+                indexedDB.open("InventoryStorageDB",1);
+
+            request.onupgradeneeded = ()=>{
+
+                const db = request.result;
+
+                if(!db.objectStoreNames.contains("folders")){
+
+                    db.createObjectStore("folders");
+                }
+            };
+
+            request.onsuccess =
+                ()=> resolve(request.result);
+
+            request.onerror =
+                ()=> reject(request.error);
+        });
+
+        return this.db;
+    },
+
+    // ======================================
+    // STORAGE
+    // ======================================
+
+    async initializeDeviceStorage(){
+
+        try{
+
+            // iPhone Safari fallback
+
+            if(!window.showDirectoryPicker){
+
+                console.log(
+                    "File System Access API not supported"
+                );
+
+                this.folderHandle = null;
+
                 return;
             }
-    
-            product.quantity -= qty;
+
+            const db = await this.openDB();
+
+            const savedHandle =
+                await new Promise((resolve,reject)=>{
+
+                    const tx =
+                        db.transaction("folders","readonly");
+
+                    const store =
+                        tx.objectStore("folders");
+
+                    const req =
+                        store.get("inventoryFolder");
+
+                    req.onsuccess =
+                        ()=> resolve(req.result);
+
+                    req.onerror =
+                        ()=> reject(req.error);
+                });
+
+            if(savedHandle){
+
+                let permission =
+                    await savedHandle.queryPermission({
+                        mode:"readwrite"
+                    });
+
+                if(permission!=="granted"){
+
+                    permission =
+                        await savedHandle.requestPermission({
+                            mode:"readwrite"
+                        });
+                }
+
+                if(permission==="granted"){
+
+                    this.folderHandle = savedHandle;
+
+                    console.log("Folder restored");
+
+                    return;
+                }
+            }
+
+            alert(
+                "Select a folder for permanent inventory storage"
+            );
+
+            const folderHandle =
+                await window.showDirectoryPicker();
+
+            const permission =
+                await folderHandle.requestPermission({
+                    mode:"readwrite"
+                });
+
+            if(permission!=="granted"){
+
+                alert("Folder permission denied");
+
+                return;
+            }
+
+            this.folderHandle = folderHandle;
+
+            await new Promise((resolve,reject)=>{
+
+                const tx =
+                    db.transaction("folders","readwrite");
+
+                const store =
+                    tx.objectStore("folders");
+
+                const req =
+                    store.put(
+                        folderHandle,
+                        "inventoryFolder"
+                    );
+
+                req.onsuccess = ()=> resolve();
+
+                req.onerror = ()=> reject(req.error);
+            });
+
+            console.log("Folder saved");
+
+        }catch(err){
+
+            console.error(err);
+
+            this.folderHandle = null;
         }
-    
-        product.updatedAt = new Date().toISOString();
-    
-        await InventoryDB.addTransaction({
-    
-            id:generateId(),
-    
-            productId:product.id,
-    
-            productName:product.name,
-    
-            type:action,
-    
-            quantity:qty,
-    
-            previousStock:previous,
-    
-            newStock:product.quantity,
-    
-            date:new Date().toLocaleString()
-        });
-    
-        await InventoryDB.saveDeviceFiles();
-    
-        renderProducts();
-        renderTransactions();
-        renderStats();
-    }
-    
+    },
+
     // ======================================
-    // EDIT
+    // LOAD FILES
     // ======================================
-    
-    async function editProduct(id){
-    
-        if(MODE !== "admin") return;
-    
-        const product =
-            InventoryDB.memory.products.find(
-                p=>p.id===id
-            );
-    
-        if(!product) return;
-    
-        const newName =
-            prompt("Product Name",product.name);
-    
-        if(!newName) return;
-    
-        const newQty =
-            Number(prompt("Quantity",product.quantity));
-    
-        const newMin =
-            Number(prompt("Min Stock",product.minStock));
-    
-        product.name = newName;
-        product.quantity = newQty;
-        product.minStock = newMin;
-    
-        product.updatedAt = new Date().toISOString();
-    
-        await InventoryDB.saveDeviceFiles();
-    
-        renderProducts();
-        renderStats();
-    }
-    
-    // ======================================
-    // DELETE
-    // ======================================
-    
-    async function deleteProduct(id){
-    
-        if(MODE !== "admin") return;
-    
-        if(!confirm("Delete product?")) return;
-    
-        InventoryDB.memory.products =
-            InventoryDB.memory.products.filter(
-                p=>p.id!==id
-            );
-    
-        await InventoryDB.saveDeviceFiles();
-    
-        renderProducts();
-        renderStats();
-    }
-    
-    // ======================================
-    // RENDER PRODUCTS
-    // ======================================
-    
-    function renderProducts(){
-    
-        const tbody =
-            document.getElementById("productTable");
-    
-        tbody.innerHTML = "";
-    
-        InventoryDB.memory.products.forEach(product=>{
-    
-            const status =
-                getStatus(
-                    product.quantity,
-                    product.minStock
+
+    async loadDeviceFiles(){
+
+        try{
+
+            // iPhone fallback
+
+            if(!this.folderHandle){
+
+                const products =
+                    localStorage.getItem(
+                        "inventory-products"
+                    );
+
+                const transactions =
+                    localStorage.getItem(
+                        "inventory-transactions"
+                    );
+
+                this.memory.products =
+                    products
+                    ? JSON.parse(products)
+                    : [];
+
+                this.memory.transactions =
+                    transactions
+                    ? JSON.parse(transactions)
+                    : [];
+
+                return;
+            }
+
+            // PRODUCTS
+
+            const productsHandle =
+                await this.folderHandle.getFileHandle(
+                    "products.json",
+                    {create:true}
                 );
-    
-            tbody.innerHTML += `
-            <tr>
-    
-                <td>${product.name}</td>
-                <td>${product.size}</td>
-                <td>${product.unitType}</td>
-                <td>${product.quantity}</td>
-                <td>${product.minStock}</td>
-    
-                <td class="${status}">
-                    ${status.toUpperCase()}
-                </td>
-    
-                <td>
-    
-                    ${
-                        MODE === "admin"
-    
-                        ?
-    
-                        `
-                        <div class="actions">
-    
-                            <button onclick="changeStock('${product.id}','add')">+</button>
-    
-                            <button onclick="changeStock('${product.id}','remove')">-</button>
-    
-                            <button onclick="editProduct('${product.id}')">Edit</button>
-    
-                            <button onclick="deleteProduct('${product.id}')">Delete</button>
-    
-                        </div>
-                        `
-    
-                        :
-    
-                        `View Only`
+
+            const productsFile =
+                await productsHandle.getFile();
+
+            const productsText =
+                await productsFile.text();
+
+            this.memory.products =
+                productsText
+                ? JSON.parse(productsText)
+                : [];
+
+            // TRANSACTIONS
+
+            const transactionsHandle =
+                await this.folderHandle.getFileHandle(
+                    "transactions.json",
+                    {create:true}
+                );
+
+            const transactionsFile =
+                await transactionsHandle.getFile();
+
+            const transactionsText =
+                await transactionsFile.text();
+
+            this.memory.transactions =
+                transactionsText
+                ? JSON.parse(transactionsText)
+                : [];
+
+            if(!Array.isArray(this.memory.products)){
+
+                this.memory.products = [];
+            }
+
+            if(!Array.isArray(this.memory.transactions)){
+
+                this.memory.transactions = [];
+            }
+
+        }catch(err){
+
+            console.error(err);
+
+            this.memory.products = [];
+            this.memory.transactions = [];
+        }
+    },
+
+    // ======================================
+    // SAVE FILES
+    // ======================================
+
+    async saveDeviceFiles(){
+
+        try{
+
+            // iPhone fallback
+
+            if(!this.folderHandle){
+
+                localStorage.setItem(
+                    "inventory-products",
+                    JSON.stringify(this.memory.products)
+                );
+
+                localStorage.setItem(
+                    "inventory-transactions",
+                    JSON.stringify(this.memory.transactions)
+                );
+
+                console.log("Saved to localStorage");
+
+                return;
+            }
+
+            // PRODUCTS
+
+            const productsHandle =
+                await this.folderHandle.getFileHandle(
+                    "products.json",
+                    {create:true}
+                );
+
+            const writable1 =
+                await productsHandle.createWritable();
+
+            await writable1.write(
+                JSON.stringify(
+                    this.memory.products,
+                    null,
+                    2
+                )
+            );
+
+            await writable1.close();
+
+            // TRANSACTIONS
+
+            const transactionsHandle =
+                await this.folderHandle.getFileHandle(
+                    "transactions.json",
+                    {create:true}
+                );
+
+            const writable2 =
+                await transactionsHandle.createWritable();
+
+            await writable2.write(
+                JSON.stringify(
+                    this.memory.transactions,
+                    null,
+                    2
+                )
+            );
+
+            await writable2.close();
+
+            console.log("Saved");
+
+        }catch(err){
+
+            console.error(err);
+        }
+    },
+
+    ensureMigration(){
+
+        let changed = false;
+
+        this.memory.products.forEach(p=>{
+
+            if(!p.unitType){
+
+                p.unitType = "Pcs";
+
+                changed = true;
+            }
+        });
+
+        if(changed){
+
+            this.saveDeviceFiles();
+        }
+    },
+
+    // ======================================
+    // CLOUD
+    // ======================================
+
+    async loadFromCloud(){
+
+        try{
+
+            const productsResponse =
+                await fetch(
+                    `${API_URL}?action=getProducts`
+                );
+
+            const transactionsResponse =
+                await fetch(
+                    `${API_URL}?action=getTransactions&limit=200`
+                );
+
+            this.memory.products =
+                await productsResponse.json();
+
+            this.memory.transactions =
+                await transactionsResponse.json();
+
+        }catch(err){
+
+            console.error(err);
+
+            this.memory.products = [];
+            this.memory.transactions = [];
+        }
+    },
+
+    async syncToCloud(){
+
+        if(MODE!=="admin") return;
+
+        try{
+
+            await fetch(API_URL,{
+
+                method:"POST",
+
+                body:JSON.stringify({
+
+                    action:"syncAll",
+
+                    data:{
+                        products:this.memory.products,
+                        transactions:this.memory.transactions
                     }
-    
-                </td>
-    
-            </tr>
-            `;
-        });
+                })
+            });
+
+        }catch(err){
+
+            console.error(err);
+        }
+    },
+
+    async addTransaction(transaction){
+
+        this.memory.transactions.unshift(transaction);
+
+        if(this.memory.transactions.length > 500){
+
+            this.memory.transactions =
+                this.memory.transactions.slice(0,500);
+        }
+
+        await this.saveDeviceFiles();
     }
-    
-    // ======================================
-    // RENDER TRANSACTIONS
-    // ======================================
-    
-    function renderTransactions(){
-    
-        const tbody =
-            document.getElementById("transactionTable");
-    
-        tbody.innerHTML = "";
-    
-        InventoryDB.memory.transactions.forEach(t=>{
-    
-            tbody.innerHTML += `
-            <tr>
-    
-                <td>${t.productName}</td>
-                <td>${t.type}</td>
-                <td>${t.quantity}</td>
-                <td>${t.previousStock}</td>
-                <td>${t.newStock}</td>
-                <td>${t.date}</td>
-    
-            </tr>
-            `;
-        });
+};
+
+// ======================================
+// AUTO SAVE
+// ======================================
+
+window.addEventListener("pagehide",()=>{
+
+    InventoryDB.saveDeviceFiles();
+});
+
+// ======================================
+// AUTO SYNC
+// ======================================
+
+setInterval(async()=>{
+
+    if(MODE==="admin"){
+
+        await InventoryDB.syncToCloud();
     }
-    
-    // ======================================
-    // STATS
-    // ======================================
-    
-    function renderStats(){
-    
-        const products =
-            InventoryDB.memory.products;
-    
-        let totalStock = 0;
-        let lowStock = 0;
-        let critical = 0;
-    
-        products.forEach(p=>{
-    
-            totalStock += p.quantity;
-    
-            if(p.quantity <= p.minStock){
-                lowStock++;
-            }
-    
-            if(p.quantity === 0){
-                critical++;
-            }
-        });
-    
-        document.getElementById("stats").innerHTML = `
-    
-        <div class="stat-box">
-            <h3>Total Products</h3>
-            <h2>${products.length}</h2>
-        </div>
-    
-        <div class="stat-box">
-            <h3>Total Stock</h3>
-            <h2>${totalStock}</h2>
-        </div>
-    
-        <div class="stat-box">
-            <h3>Low Stock</h3>
-            <h2>${lowStock}</h2>
-        </div>
-    
-        <div class="stat-box">
-            <h3>Critical</h3>
-            <h2>${critical}</h2>
-        </div>
+
+},12000);
+
+// ======================================
+// HELPERS
+// ======================================
+
+function generateId(){
+
+    return crypto.randomUUID();
+}
+
+function getStatus(qty,min){
+
+    if(qty===0) return "critical";
+
+    if(qty<=min) return "low";
+
+    return "normal";
+}
+
+// ======================================
+// ADD PRODUCT
+// ======================================
+
+async function addProductHandler(){
+
+    if(MODE!=="admin") return;
+
+    const name =
+        document.getElementById("name").value.trim();
+
+    const size =
+        document.getElementById("size").value.trim();
+
+    const unitType =
+        document.getElementById("unitTypeSelect").value;
+
+    let quantity =
+        Number(
+            document.getElementById("quantity").value
+        );
+
+    let minStock =
+        Number(
+            document.getElementById("minStock").value
+        );
+
+    if(!name){
+
+        alert("Product name required");
+
+        return;
+    }
+
+    if(isNaN(quantity)) quantity = 0;
+
+    if(isNaN(minStock)) minStock = 5;
+
+    const newProduct = {
+
+        id:generateId(),
+
+        name,
+
+        size:size || "Standard",
+
+        unitType,
+
+        quantity,
+
+        minStock,
+
+        createdAt:new Date().toISOString(),
+
+        updatedAt:new Date().toISOString()
+    };
+
+    InventoryDB.memory.products.unshift(newProduct);
+
+    await InventoryDB.addTransaction({
+
+        id:generateId(),
+
+        productId:newProduct.id,
+
+        productName:newProduct.name,
+
+        type:"initial",
+
+        quantity:newProduct.quantity,
+
+        previousStock:0,
+
+        newStock:newProduct.quantity,
+
+        date:new Date().toLocaleString()
+    });
+
+    await InventoryDB.saveDeviceFiles();
+
+    renderProducts();
+    renderTransactions();
+    renderStats();
+
+    clearForm();
+}
+
+function clearForm(){
+
+    document.getElementById("name").value="";
+    document.getElementById("size").value="";
+    document.getElementById("quantity").value="";
+    document.getElementById("minStock").value="";
+}
+
+// ======================================
+// STOCK
+// ======================================
+
+async function changeStock(id,action){
+
+    if(MODE!=="admin") return;
+
+    const product =
+        InventoryDB.memory.products.find(
+            p=>p.id===id
+        );
+
+    if(!product) return;
+
+    const qty =
+        Number(prompt("Enter quantity"));
+
+    if(isNaN(qty) || qty<=0) return;
+
+    const previous = product.quantity;
+
+    if(action==="add"){
+
+        product.quantity += qty;
+
+    }else{
+
+        if(qty > product.quantity){
+
+            alert("Insufficient stock");
+
+            return;
+        }
+
+        product.quantity -= qty;
+    }
+
+    product.updatedAt =
+        new Date().toISOString();
+
+    await InventoryDB.addTransaction({
+
+        id:generateId(),
+
+        productId:product.id,
+
+        productName:product.name,
+
+        type:action,
+
+        quantity:qty,
+
+        previousStock:previous,
+
+        newStock:product.quantity,
+
+        date:new Date().toLocaleString()
+    });
+
+    await InventoryDB.saveDeviceFiles();
+
+    renderProducts();
+    renderTransactions();
+    renderStats();
+}
+
+// ======================================
+// EDIT
+// ======================================
+
+async function editProduct(id){
+
+    if(MODE!=="admin") return;
+
+    const product =
+        InventoryDB.memory.products.find(
+            p=>p.id===id
+        );
+
+    if(!product) return;
+
+    const newName =
+        prompt("Product Name",product.name);
+
+    if(!newName) return;
+
+    const newQty =
+        Number(prompt("Quantity",product.quantity));
+
+    const newMin =
+        Number(prompt("Min Stock",product.minStock));
+
+    product.name = newName;
+    product.quantity = newQty;
+    product.minStock = newMin;
+
+    product.updatedAt =
+        new Date().toISOString();
+
+    await InventoryDB.saveDeviceFiles();
+
+    renderProducts();
+    renderStats();
+}
+
+// ======================================
+// DELETE
+// ======================================
+
+async function deleteProduct(id){
+
+    if(MODE!=="admin") return;
+
+    if(!confirm("Delete product?")) return;
+
+    InventoryDB.memory.products =
+        InventoryDB.memory.products.filter(
+            p=>p.id!==id
+        );
+
+    await InventoryDB.saveDeviceFiles();
+
+    renderProducts();
+    renderStats();
+}
+
+// ======================================
+// RENDER PRODUCTS
+// ======================================
+
+function renderProducts(){
+
+    const tbody =
+        document.getElementById("productTable");
+
+    tbody.innerHTML = "";
+
+    InventoryDB.memory.products.forEach(product=>{
+
+        const status =
+            getStatus(
+                product.quantity,
+                product.minStock
+            );
+
+        tbody.innerHTML += `
+        <tr>
+
+            <td>${product.name}</td>
+            <td>${product.size}</td>
+            <td>${product.unitType}</td>
+            <td>${product.quantity}</td>
+            <td>${product.minStock}</td>
+
+            <td class="${status}">
+                ${status.toUpperCase()}
+            </td>
+
+            <td>
+
+                ${
+                    MODE==="admin"
+
+                    ?
+
+                    `
+                    <div class="actions">
+
+                        <button onclick="changeStock('${product.id}','add')">
+                            +
+                        </button>
+
+                        <button onclick="changeStock('${product.id}','remove')">
+                            -
+                        </button>
+
+                        <button onclick="editProduct('${product.id}')">
+                            Edit
+                        </button>
+
+                        <button onclick="deleteProduct('${product.id}')">
+                            Delete
+                        </button>
+
+                    </div>
+                    `
+
+                    :
+
+                    `View Only`
+                }
+
+            </td>
+
+        </tr>
         `;
-    }
-    
-    </script>
+    });
+}
+
+// ======================================
+// RENDER TRANSACTIONS
+// ======================================
+
+function renderTransactions(){
+
+    const tbody =
+        document.getElementById("transactionTable");
+
+    tbody.innerHTML = "";
+
+    InventoryDB.memory.transactions.forEach(t=>{
+
+        tbody.innerHTML += `
+        <tr>
+
+            <td>${t.productName}</td>
+            <td>${t.type}</td>
+            <td>${t.quantity}</td>
+            <td>${t.previousStock}</td>
+            <td>${t.newStock}</td>
+            <td>${t.date}</td>
+
+        </tr>
+        `;
+    });
+}
+
+// ======================================
+// STATS
+// ======================================
+
+function renderStats(){
+
+    const products =
+        InventoryDB.memory.products;
+
+    let totalStock = 0;
+    let lowStock = 0;
+    let critical = 0;
+
+    products.forEach(p=>{
+
+        totalStock += p.quantity;
+
+        if(p.quantity <= p.minStock){
+
+            lowStock++;
+        }
+
+        if(p.quantity === 0){
+
+            critical++;
+        }
+    });
+
+    document.getElementById("stats").innerHTML = `
+
+    <div class="stat-box">
+
+        <h3>Total Products</h3>
+
+        <h2>${products.length}</h2>
+
+    </div>
+
+    <div class="stat-box">
+
+        <h3>Total Stock</h3>
+
+        <h2>${totalStock}</h2>
+
+    </div>
+
+    <div class="stat-box">
+
+        <h3>Low Stock</h3>
+
+        <h2>${lowStock}</h2>
+
+    </div>
+
+    <div class="stat-box">
+
+        <h3>Critical</h3>
+
+        <h2>${critical}</h2>
+
+    </div>
+    `;
+}
+
+</script>
 
 </body>
 </html>
