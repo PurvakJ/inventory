@@ -1,3 +1,7 @@
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +10,7 @@
 <title>Inventory Management System | Device Storage Edition</title>
 
 <style>
+
 
 /* Inventory Management System - Enhanced Premium Stylesheet */
 
@@ -333,100 +338,63 @@ tr:hover{
     }
 }
 
+
+/* YOUR EXISTING CSS HERE */
+/* Keep your full CSS unchanged */
 </style>
 </head>
 
 <body>
 
 <!-- LOGIN -->
-
 <div id="loginScreen" class="card">
-
     <h2>Inventory Login</h2>
 
-    <input
-        type="password"
-        id="adminPassword"
-        placeholder="Admin Password"
-    >
-
+    <input type="password" id="adminPassword" placeholder="Admin Password">
     <br><br>
 
-    <button onclick="loginAdmin()">
-        Login As Admin
-    </button>
-
+    <button onclick="loginAdmin()">Login As Admin</button>
     <br><br>
 
-    <button onclick="loginViewer()">
-        Enter As Viewer
-    </button>
-
+    <button onclick="loginViewer()">Enter As Viewer</button>
 </div>
 
 <!-- APP -->
-
 <div id="app" class="hidden">
 
     <div class="topbar">
-
         <h1>Inventory Management</h1>
 
         <div>
-
             <span id="roleText"></span>
 
-            <button
-                onclick="logout()"
-                style="width:auto;"
-            >
+            <button onclick="logout()" style="width:auto;">
                 Logout
             </button>
-
         </div>
-
     </div>
 
     <!-- ADD PRODUCT -->
-
     <div class="card" id="adminPanel">
 
         <h2>Add Product</h2>
 
         <div class="grid">
 
-            <input
-                type="text"
-                id="name"
-                placeholder="Product Name"
-            >
+            <input type="text" id="name" placeholder="Product Name">
 
-            <input
-                type="text"
-                id="size"
-                placeholder="Size"
-            >
+            <input type="text" id="size" placeholder="Size">
 
             <select id="unitTypeSelect">
-
                 <option value="Pcs">Pcs</option>
                 <option value="Meter">Meter</option>
                 <option value="Kg">Kg</option>
                 <option value="Bundle">Bundle</option>
-
             </select>
 
-            <input
-                type="number"
-                id="quantity"
-                placeholder="Quantity"
-            >
+            <input type="number" id="quantity" placeholder="Quantity">
 
-            <input
-                type="number"
-                id="minStock"
-                placeholder="Min Stock"
-            >
+            <input type="number" id="minStock" placeholder="Min Stock">
 
         </div>
 
@@ -439,41 +407,32 @@ tr:hover{
     </div>
 
     <!-- STATS -->
-
     <div class="stats" id="stats"></div>
 
     <!-- TABS -->
-
     <div class="card">
 
         <div class="tabs-header">
 
-            <button
-                class="tab-btn active"
-                onclick="switchTab('productsTab',this)"
-            >
+            <button class="tab-btn active"
+                onclick="switchTab('productsTab', this)">
                 Products
             </button>
 
-            <button
-                class="tab-btn"
-                onclick="switchTab('transactionsTab',this)"
-            >
+            <button class="tab-btn"
+                onclick="switchTab('transactionsTab', this)">
                 Transactions
             </button>
 
         </div>
 
-        <!-- PRODUCTS -->
-
+        <!-- PRODUCTS TAB -->
         <div id="productsTab" class="tab-pane active">
 
             <table>
 
                 <thead>
-
                     <tr>
-
                         <th>Name</th>
                         <th>Size</th>
                         <th>Unit</th>
@@ -481,9 +440,7 @@ tr:hover{
                         <th>Min</th>
                         <th>Status</th>
                         <th>Actions</th>
-
                     </tr>
-
                 </thead>
 
                 <tbody id="productTable"></tbody>
@@ -492,25 +449,20 @@ tr:hover{
 
         </div>
 
-        <!-- TRANSACTIONS -->
-
+        <!-- TRANSACTION TAB -->
         <div id="transactionsTab" class="tab-pane">
 
             <table>
 
                 <thead>
-
                     <tr>
-
                         <th>Product</th>
                         <th>Type</th>
                         <th>Qty</th>
                         <th>Previous</th>
                         <th>New</th>
                         <th>Date</th>
-
                     </tr>
-
                 </thead>
 
                 <tbody id="transactionTable"></tbody>
@@ -525,26 +477,94 @@ tr:hover{
 
 <script>
 
-// ======================================
-// CONFIG
-// ======================================
+    // ======================================
+    // CONFIG
+    // ======================================
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbybZXQt8wUQjFuevaIUGPPUiUpkjOqOUMasdOFNg2xTi6qzySVa88EATdIst1MYhij4vg/exec";
+    const API_URL =
+    "https://script.google.com/macros/s/AKfycbybZXQt8wUQjFuevaIUGPPUiUpkjOqOUMasdOFNg2xTi6qzySVa88EATdIst1MYhij4vg/exec";
 
-const ADMIN_PASSWORD = "admin123";
+    const ADMIN_PASSWORD = "admin123";
 
-let MODE =
-    sessionStorage.getItem("inventory-mode")
-    || "viewer";
+    let MODE =
+        sessionStorage.getItem("inventory-mode")
+        || "viewer";
 
-// ======================================
-// AUTO START
-// ======================================
+    // ======================================
+    // AUTO START SESSION
+    // ======================================
 
-window.addEventListener("load",async()=>{
+    window.addEventListener("load", async () => {
 
-    if(sessionStorage.getItem("inventory-logged")==="true"){
+        if(sessionStorage.getItem("inventory-logged") === "true"){
+
+            document.getElementById("loginScreen")
+                .classList.add("hidden");
+
+            document.getElementById("app")
+                .classList.remove("hidden");
+
+            document.getElementById("roleText")
+                .innerText = MODE.toUpperCase();
+
+            if(MODE === "viewer"){
+
+                document.getElementById("adminPanel")
+                    .style.display = "none";
+            }
+
+            await InventoryDB.init();
+        }
+    });
+
+    // ======================================
+    // LOGIN
+    // ======================================
+
+    async function loginAdmin(){
+
+        const password =
+            document.getElementById("adminPassword").value;
+
+        if(password !== ADMIN_PASSWORD){
+
+            alert("Wrong Password");
+
+            return;
+        }
+
+        MODE = "admin";
+
+        sessionStorage.setItem("inventory-mode","admin");
+        sessionStorage.setItem("inventory-logged","true");
+
+        await startApp();
+    }
+
+    async function loginViewer(){
+
+        MODE = "viewer";
+
+        sessionStorage.setItem("inventory-mode","viewer");
+        sessionStorage.setItem("inventory-logged","true");
+
+        await startApp();
+    }
+
+    function logout(){
+
+        sessionStorage.clear();
+
+        document.getElementById("app")
+            .classList.add("hidden");
+
+        document.getElementById("loginScreen")
+            .classList.remove("hidden");
+
+        document.getElementById("adminPassword").value = "";
+    }
+
+    async function startApp(){
 
         document.getElementById("loginScreen")
             .classList.add("hidden");
@@ -555,193 +575,130 @@ window.addEventListener("load",async()=>{
         document.getElementById("roleText")
             .innerText = MODE.toUpperCase();
 
-        if(MODE==="viewer"){
+        if(MODE === "viewer"){
 
             document.getElementById("adminPanel")
-                .style.display="none";
+                .style.display = "none";
+
+        }else{
+
+            document.getElementById("adminPanel")
+                .style.display = "block";
         }
 
         await InventoryDB.init();
     }
-});
-
-// ======================================
-// LOGIN
-// ======================================
-
-async function loginAdmin(){
-
-    const password =
-        document.getElementById("adminPassword").value;
-
-    if(password !== ADMIN_PASSWORD){
-
-        alert("Wrong Password");
-
-        return;
-    }
-
-    MODE = "admin";
-
-    sessionStorage.setItem("inventory-mode","admin");
-    sessionStorage.setItem("inventory-logged","true");
-
-    await startApp();
-}
-
-async function loginViewer(){
-
-    MODE = "viewer";
-
-    sessionStorage.setItem("inventory-mode","viewer");
-    sessionStorage.setItem("inventory-logged","true");
-
-    await startApp();
-}
-
-function logout(){
-
-    sessionStorage.clear();
-
-    document.getElementById("app")
-        .classList.add("hidden");
-
-    document.getElementById("loginScreen")
-        .classList.remove("hidden");
-
-    document.getElementById("adminPassword").value = "";
-}
-
-async function startApp(){
-
-    document.getElementById("loginScreen")
-        .classList.add("hidden");
-
-    document.getElementById("app")
-        .classList.remove("hidden");
-
-    document.getElementById("roleText")
-        .innerText = MODE.toUpperCase();
-
-    if(MODE==="viewer"){
-
-        document.getElementById("adminPanel")
-            .style.display="none";
-
-    }else{
-
-        document.getElementById("adminPanel")
-            .style.display="block";
-    }
-
-    await InventoryDB.init();
-}
-
-// ======================================
-// TABS
-// ======================================
-
-function switchTab(tabId,btn){
-
-    document.querySelectorAll(".tab-pane")
-        .forEach(el=>el.classList.remove("active"));
-
-    document.querySelectorAll(".tab-btn")
-        .forEach(el=>el.classList.remove("active"));
-
-    document.getElementById(tabId)
-        .classList.add("active");
-
-    btn.classList.add("active");
-}
-
-// ======================================
-// DATABASE
-// ======================================
-
-const InventoryDB = {
-
-    memory:{
-        products:[],
-        transactions:[]
-    },
-
-    folderHandle:null,
-
-    db:null,
-
-    initialized:false,
-
-    async init(){
-
-        if(this.initialized) return;
-
-        this.initialized = true;
-
-        if(MODE==="admin"){
-
-            await this.initializeDeviceStorage();
-
-            await this.loadDeviceFiles();
-
-            this.ensureMigration();
-
-            renderProducts();
-            renderTransactions();
-            renderStats();
-
-            await this.syncToCloud();
-
-        }else{
-
-            await this.loadFromCloud();
-
-            renderProducts();
-            renderTransactions();
-            renderStats();
-        }
-    },
-
-    async openDB(){
-
-        if(this.db) return this.db;
-
-        this.db = await new Promise((resolve,reject)=>{
-
-            const request =
-                indexedDB.open("InventoryStorageDB",1);
-
-            request.onupgradeneeded = ()=>{
-
-                const db = request.result;
-
-                if(!db.objectStoreNames.contains("folders")){
-
-                    db.createObjectStore("folders");
-                }
-            };
-
-            request.onsuccess =
-                ()=> resolve(request.result);
-
-            request.onerror =
-                ()=> reject(request.error);
-        });
-
-        return this.db;
-    },
 
     // ======================================
-    // STORAGE
+    // TABS
     // ======================================
 
-    async initializeDeviceStorage(){
+    function switchTab(tabId, btn){
 
-        try{
+        document.querySelectorAll(".tab-pane")
+            .forEach(el => el.classList.remove("active"));
 
-            // iPhone Safari fallback
+        document.querySelectorAll(".tab-btn")
+            .forEach(el => el.classList.remove("active"));
 
-            if(!window.showDirectoryPicker){
+        document.getElementById(tabId)
+            .classList.add("active");
+
+        btn.classList.add("active");
+    }
+
+    // ======================================
+    // DATABASE
+    // ======================================
+
+    const InventoryDB = {
+
+        memory:{
+            products:[],
+            transactions:[]
+        },
+
+        folderHandle:null,
+
+        db:null,
+
+        initialized:false,
+
+        // ======================================
+        // INIT
+        // ======================================
+
+        async init(){
+
+            if(this.initialized) return;
+
+            this.initialized = true;
+
+            if(MODE === "admin"){
+
+                await this.initializeDeviceStorage();
+
+                await this.loadDeviceFiles();
+
+                this.ensureMigration();
+
+                renderProducts();
+                renderTransactions();
+                renderStats();
+
+                await this.syncToCloud();
+
+            }else{
+
+                await this.loadFromCloud();
+
+                renderProducts();
+                renderTransactions();
+                renderStats();
+            }
+        },
+
+        // ======================================
+        // OPEN INDEXEDDB
+        // ======================================
+
+        async openDB(){
+
+            if(this.db) return this.db;
+
+            this.db = await new Promise((resolve,reject)=>{
+
+                const request =
+                    indexedDB.open("InventoryStorageDB",1);
+
+                request.onupgradeneeded = ()=>{
+
+                    const db = request.result;
+
+                    if(!db.objectStoreNames.contains("folders")){
+
+                        db.createObjectStore("folders");
+                    }
+                };
+
+                request.onsuccess =
+                    ()=> resolve(request.result);
+
+                request.onerror =
+                    ()=> reject(request.error);
+            });
+
+            return this.db;
+        },
+
+        // ======================================
+        // STORAGE INIT
+        // ======================================
+
+        async initializeDeviceStorage(){
+
+            // iPhone / Safari fallback
+            if (!window.showDirectoryPicker) {
 
                 console.log(
                     "File System Access API not supported"
@@ -749,207 +706,221 @@ const InventoryDB = {
 
                 this.folderHandle = null;
 
-                return;
-            }
-
-            const db = await this.openDB();
-
-            const savedHandle =
-                await new Promise((resolve,reject)=>{
-
-                    const tx =
-                        db.transaction("folders","readonly");
-
-                    const store =
-                        tx.objectStore("folders");
-
-                    const req =
-                        store.get("inventoryFolder");
-
-                    req.onsuccess =
-                        ()=> resolve(req.result);
-
-                    req.onerror =
-                        ()=> reject(req.error);
-                });
-
-            if(savedHandle){
-
-                let permission =
-                    await savedHandle.queryPermission({
-                        mode:"readwrite"
-                    });
-
-                if(permission!=="granted"){
-
-                    permission =
-                        await savedHandle.requestPermission({
-                            mode:"readwrite"
-                        });
-                }
-
-                if(permission==="granted"){
-
-                    this.folderHandle = savedHandle;
-
-                    console.log("Folder restored");
-
-                    return;
-                }
-            }
-
-            alert(
-                "Select a folder for permanent inventory storage"
-            );
-
-            const folderHandle =
-                await window.showDirectoryPicker();
-
-            const permission =
-                await folderHandle.requestPermission({
-                    mode:"readwrite"
-                });
-
-            if(permission!=="granted"){
-
-                alert("Folder permission denied");
-
-                return;
-            }
-
-            this.folderHandle = folderHandle;
-
-            await new Promise((resolve,reject)=>{
-
-                const tx =
-                    db.transaction("folders","readwrite");
-
-                const store =
-                    tx.objectStore("folders");
-
-                const req =
-                    store.put(
-                        folderHandle,
-                        "inventoryFolder"
-                    );
-
-                req.onsuccess = ()=> resolve();
-
-                req.onerror = ()=> reject(req.error);
-            });
-
-            console.log("Folder saved");
-
-        }catch(err){
-
-            console.error(err);
-
-            this.folderHandle = null;
-        }
-    },
-
-    // ======================================
-    // LOAD FILES
-    // ======================================
-
-    async loadDeviceFiles(){
-
-        try{
-
-            // iPhone fallback
-
-            if(!this.folderHandle){
-
-                const products =
+                const savedProducts =
                     localStorage.getItem(
                         "inventory-products"
                     );
 
-                const transactions =
+                const savedTransactions =
                     localStorage.getItem(
                         "inventory-transactions"
                     );
 
                 this.memory.products =
-                    products
-                    ? JSON.parse(products)
-                    : [];
+                    savedProducts
+                        ? JSON.parse(savedProducts)
+                        : [];
 
                 this.memory.transactions =
-                    transactions
-                    ? JSON.parse(transactions)
-                    : [];
+                    savedTransactions
+                        ? JSON.parse(savedTransactions)
+                        : [];
 
                 return;
             }
 
-            // PRODUCTS
+            try{
 
-            const productsHandle =
-                await this.folderHandle.getFileHandle(
-                    "products.json",
-                    {create:true}
+                const db = await this.openDB();
+
+                // RESTORE SAVED HANDLE
+                const savedHandle =
+                    await new Promise((resolve,reject)=>{
+
+                        const tx =
+                            db.transaction(
+                                "folders",
+                                "readonly"
+                            );
+
+                        const store =
+                            tx.objectStore("folders");
+
+                        const req =
+                            store.get("inventoryFolder");
+
+                        req.onsuccess =
+                            ()=> resolve(req.result);
+
+                        req.onerror =
+                            ()=> reject(req.error);
+                    });
+
+                // HANDLE EXISTS
+                if(savedHandle){
+
+                    let permission =
+                        await savedHandle.queryPermission({
+                            mode:"readwrite"
+                        });
+
+                    if(permission !== "granted"){
+
+                        permission =
+                            await savedHandle.requestPermission({
+                                mode:"readwrite"
+                            });
+                    }
+
+                    if(permission === "granted"){
+
+                        this.folderHandle = savedHandle;
+
+                        console.log("Folder restored");
+
+                        return;
+                    }
+                }
+
+                // FIRST TIME
+                alert(
+                    "Select a folder for permanent inventory storage"
                 );
 
-            const productsFile =
-                await productsHandle.getFile();
+                const folderHandle =
+                    await window.showDirectoryPicker();
 
-            const productsText =
-                await productsFile.text();
+                const permission =
+                    await folderHandle.requestPermission({
+                        mode:"readwrite"
+                    });
 
-            this.memory.products =
-                productsText
-                ? JSON.parse(productsText)
-                : [];
+                if(permission !== "granted"){
 
-            // TRANSACTIONS
+                    alert("Folder permission denied");
 
-            const transactionsHandle =
-                await this.folderHandle.getFileHandle(
-                    "transactions.json",
-                    {create:true}
-                );
+                    return;
+                }
 
-            const transactionsFile =
-                await transactionsHandle.getFile();
+                this.folderHandle = folderHandle;
 
-            const transactionsText =
-                await transactionsFile.text();
+                // SAVE HANDLE
+                await new Promise((resolve,reject)=>{
 
-            this.memory.transactions =
-                transactionsText
-                ? JSON.parse(transactionsText)
-                : [];
+                    const tx =
+                        db.transaction(
+                            "folders",
+                            "readwrite"
+                        );
 
-            if(!Array.isArray(this.memory.products)){
+                    const store =
+                        tx.objectStore("folders");
+
+                    const req =
+                        store.put(
+                            folderHandle,
+                            "inventoryFolder"
+                        );
+
+                    req.onsuccess = ()=> resolve();
+
+                    req.onerror = ()=> reject(req.error);
+                });
+
+                console.log("Folder saved");
+
+            }catch(err){
+
+                console.error(err);
+
+                alert("Storage initialization failed");
+            }
+        },
+
+        // ======================================
+        // LOAD FILES
+        // ======================================
+
+        async loadDeviceFiles(){
+
+            // localStorage fallback
+            if(!this.folderHandle){
+
+                const savedProducts =
+                    localStorage.getItem(
+                        "inventory-products"
+                    );
+
+                const savedTransactions =
+                    localStorage.getItem(
+                        "inventory-transactions"
+                    );
+
+                this.memory.products =
+                    savedProducts
+                        ? JSON.parse(savedProducts)
+                        : [];
+
+                this.memory.transactions =
+                    savedTransactions
+                        ? JSON.parse(savedTransactions)
+                        : [];
+
+                return;
+            }
+
+            try{
+
+                const productsHandle =
+                    await this.folderHandle.getFileHandle(
+                        "products.json",
+                        {create:true}
+                    );
+
+                const productsFile =
+                    await productsHandle.getFile();
+
+                const productsText =
+                    await productsFile.text();
+
+                this.memory.products =
+                    productsText
+                        ? JSON.parse(productsText)
+                        : [];
+
+                const transactionsHandle =
+                    await this.folderHandle.getFileHandle(
+                        "transactions.json",
+                        {create:true}
+                    );
+
+                const transactionsFile =
+                    await transactionsHandle.getFile();
+
+                const transactionsText =
+                    await transactionsFile.text();
+
+                this.memory.transactions =
+                    transactionsText
+                        ? JSON.parse(transactionsText)
+                        : [];
+
+            }catch(err){
+
+                console.error(err);
 
                 this.memory.products = [];
-            }
-
-            if(!Array.isArray(this.memory.transactions)){
-
                 this.memory.transactions = [];
             }
+        },
 
-        }catch(err){
+        // ======================================
+        // SAVE FILES
+        // ======================================
 
-            console.error(err);
-
-            this.memory.products = [];
-            this.memory.transactions = [];
-        }
-    },
-
-    // ======================================
-    // SAVE FILES
-    // ======================================
-
-    async saveDeviceFiles(){
-
-        try{
+        async saveDeviceFiles(){
 
             // iPhone fallback
-
             if(!this.folderHandle){
 
                 localStorage.setItem(
@@ -962,581 +933,588 @@ const InventoryDB = {
                     JSON.stringify(this.memory.transactions)
                 );
 
-                console.log("Saved to localStorage");
-
                 return;
             }
 
-            // PRODUCTS
+            try{
 
-            const productsHandle =
-                await this.folderHandle.getFileHandle(
-                    "products.json",
-                    {create:true}
+                const productsHandle =
+                    await this.folderHandle.getFileHandle(
+                        "products.json",
+                        {create:true}
+                    );
+
+                const writable1 =
+                    await productsHandle.createWritable();
+
+                await writable1.write(
+                    JSON.stringify(
+                        this.memory.products,
+                        null,
+                        2
+                    )
                 );
 
-            const writable1 =
-                await productsHandle.createWritable();
+                await writable1.close();
 
-            await writable1.write(
-                JSON.stringify(
-                    this.memory.products,
-                    null,
-                    2
-                )
-            );
+                const transactionsHandle =
+                    await this.folderHandle.getFileHandle(
+                        "transactions.json",
+                        {create:true}
+                    );
 
-            await writable1.close();
+                const writable2 =
+                    await transactionsHandle.createWritable();
 
-            // TRANSACTIONS
-
-            const transactionsHandle =
-                await this.folderHandle.getFileHandle(
-                    "transactions.json",
-                    {create:true}
+                await writable2.write(
+                    JSON.stringify(
+                        this.memory.transactions,
+                        null,
+                        2
+                    )
                 );
 
-            const writable2 =
-                await transactionsHandle.createWritable();
+                await writable2.close();
 
-            await writable2.write(
-                JSON.stringify(
-                    this.memory.transactions,
-                    null,
-                    2
-                )
-            );
+            }catch(err){
 
-            await writable2.close();
-
-            console.log("Saved");
-
-        }catch(err){
-
-            console.error(err);
-        }
-    },
-
-    ensureMigration(){
-
-        let changed = false;
-
-        this.memory.products.forEach(p=>{
-
-            if(!p.unitType){
-
-                p.unitType = "Pcs";
-
-                changed = true;
+                console.error(err);
             }
-        });
+        },
 
-        if(changed){
+        ensureMigration(){
 
-            this.saveDeviceFiles();
-        }
-    },
+            let changed = false;
 
-    // ======================================
-    // CLOUD
-    // ======================================
+            this.memory.products.forEach(p=>{
 
-    async loadFromCloud(){
+                if(!p.unitType){
 
-        try{
+                    p.unitType = "Pcs";
 
-            const productsResponse =
-                await fetch(
-                    `${API_URL}?action=getProducts`
-                );
-
-            const transactionsResponse =
-                await fetch(
-                    `${API_URL}?action=getTransactions&limit=200`
-                );
-
-            this.memory.products =
-                await productsResponse.json();
-
-            this.memory.transactions =
-                await transactionsResponse.json();
-
-        }catch(err){
-
-            console.error(err);
-
-            this.memory.products = [];
-            this.memory.transactions = [];
-        }
-    },
-
-    async syncToCloud(){
-
-        if(MODE!=="admin") return;
-
-        try{
-
-            await fetch(API_URL,{
-
-                method:"POST",
-
-                body:JSON.stringify({
-
-                    action:"syncAll",
-
-                    data:{
-                        products:this.memory.products,
-                        transactions:this.memory.transactions
-                    }
-                })
+                    changed = true;
+                }
             });
 
-        }catch(err){
+            if(changed){
 
-            console.error(err);
+                this.saveDeviceFiles();
+            }
+        },
+
+        // ======================================
+        // CLOUD
+        // ======================================
+
+        async loadFromCloud(){
+
+            try{
+
+                const productsResponse =
+                    await fetch(
+                        `${API_URL}?action=getProducts`
+                    );
+
+                const transactionsResponse =
+                    await fetch(
+                        `${API_URL}?action=getTransactions&limit=200`
+                    );
+
+                this.memory.products =
+                    await productsResponse.json();
+
+                this.memory.transactions =
+                    await transactionsResponse.json();
+
+            }catch(err){
+
+                console.error(err);
+
+                this.memory.products = [];
+                this.memory.transactions = [];
+            }
+        },
+
+        async syncToCloud(){
+
+            if(MODE !== "admin") return;
+
+            try{
+
+                await fetch(API_URL,{
+
+                    method:"POST",
+
+                    body:JSON.stringify({
+
+                        action:"syncAll",
+
+                        data:{
+                            products:this.memory.products,
+                            transactions:this.memory.transactions
+                        }
+                    })
+                });
+
+            }catch(err){
+
+                console.error(err);
+            }
+        },
+
+        async addTransaction(transaction){
+
+            this.memory.transactions.unshift(transaction);
+
+            if(this.memory.transactions.length > 500){
+
+                this.memory.transactions =
+                    this.memory.transactions.slice(0,500);
+            }
+
+            await this.saveDeviceFiles();
         }
-    },
-
-    async addTransaction(transaction){
-
-        this.memory.transactions.unshift(transaction);
-
-        if(this.memory.transactions.length > 500){
-
-            this.memory.transactions =
-                this.memory.transactions.slice(0,500);
-        }
-
-        await this.saveDeviceFiles();
-    }
-};
-
-// ======================================
-// AUTO SAVE
-// ======================================
-
-window.addEventListener("pagehide",()=>{
-
-    InventoryDB.saveDeviceFiles();
-});
-
-// ======================================
-// AUTO SYNC
-// ======================================
-
-setInterval(async()=>{
-
-    if(MODE==="admin"){
-
-        await InventoryDB.syncToCloud();
-    }
-
-},12000);
-
-// ======================================
-// HELPERS
-// ======================================
-
-function generateId(){
-
-    return crypto.randomUUID();
-}
-
-function getStatus(qty,min){
-
-    if(qty===0) return "critical";
-
-    if(qty<=min) return "low";
-
-    return "normal";
-}
-
-// ======================================
-// ADD PRODUCT
-// ======================================
-
-async function addProductHandler(){
-
-    if(MODE!=="admin") return;
-
-    const name =
-        document.getElementById("name").value.trim();
-
-    const size =
-        document.getElementById("size").value.trim();
-
-    const unitType =
-        document.getElementById("unitTypeSelect").value;
-
-    let quantity =
-        Number(
-            document.getElementById("quantity").value
-        );
-
-    let minStock =
-        Number(
-            document.getElementById("minStock").value
-        );
-
-    if(!name){
-
-        alert("Product name required");
-
-        return;
-    }
-
-    if(isNaN(quantity)) quantity = 0;
-
-    if(isNaN(minStock)) minStock = 5;
-
-    const newProduct = {
-
-        id:generateId(),
-
-        name,
-
-        size:size || "Standard",
-
-        unitType,
-
-        quantity,
-
-        minStock,
-
-        createdAt:new Date().toISOString(),
-
-        updatedAt:new Date().toISOString()
     };
 
-    InventoryDB.memory.products.unshift(newProduct);
+    // ======================================
+    // AUTO SAVE
+    // ======================================
 
-    await InventoryDB.addTransaction({
+    window.addEventListener("beforeunload", async ()=>{
 
-        id:generateId(),
-
-        productId:newProduct.id,
-
-        productName:newProduct.name,
-
-        type:"initial",
-
-        quantity:newProduct.quantity,
-
-        previousStock:0,
-
-        newStock:newProduct.quantity,
-
-        date:new Date().toLocaleString()
+        await InventoryDB.saveDeviceFiles();
     });
 
-    await InventoryDB.saveDeviceFiles();
+    // ======================================
+    // AUTO CLOUD SYNC
+    // ======================================
 
-    renderProducts();
-    renderTransactions();
-    renderStats();
+    setInterval(async ()=>{
 
-    clearForm();
-}
+        if(MODE === "admin"){
 
-function clearForm(){
+            await InventoryDB.syncToCloud();
+        }
 
-    document.getElementById("name").value="";
-    document.getElementById("size").value="";
-    document.getElementById("quantity").value="";
-    document.getElementById("minStock").value="";
-}
+    },12000);
 
-// ======================================
-// STOCK
-// ======================================
+    // ======================================
+    // HELPERS
+    // ======================================
 
-async function changeStock(id,action){
+    function generateId(){
 
-    if(MODE!=="admin") return;
+        if (crypto.randomUUID) {
 
-    const product =
-        InventoryDB.memory.products.find(
-            p=>p.id===id
-        );
+            return crypto.randomUUID();
+        }
 
-    if(!product) return;
+        return 'id-' + Date.now() + '-' +
+            Math.random().toString(16).slice(2);
+    }
 
-    const qty =
-        Number(prompt("Enter quantity"));
+    function getStatus(qty,min){
 
-    if(isNaN(qty) || qty<=0) return;
+        if(qty === 0) return "critical";
 
-    const previous = product.quantity;
+        if(qty <= min) return "low";
 
-    if(action==="add"){
+        return "normal";
+    }
 
-        product.quantity += qty;
+    // ======================================
+    // ADD PRODUCT
+    // ======================================
 
-    }else{
+    async function addProductHandler(){
 
-        if(qty > product.quantity){
+        if(MODE !== "admin") return;
 
-            alert("Insufficient stock");
+        const name =
+            document.getElementById("name").value.trim();
+
+        const size =
+            document.getElementById("size").value.trim();
+
+        const unitType =
+            document.getElementById("unitTypeSelect").value;
+
+        let quantity =
+            Number(document.getElementById("quantity").value);
+
+        let minStock =
+            Number(document.getElementById("minStock").value);
+
+        if(!name){
+
+            alert("Product name required");
 
             return;
         }
 
-        product.quantity -= qty;
+        if(isNaN(quantity)) quantity = 0;
+
+        if(isNaN(minStock)) minStock = 5;
+
+        const newProduct = {
+
+            id:generateId(),
+
+            name,
+
+            size:size || "Standard",
+
+            unitType,
+
+            quantity,
+
+            minStock,
+
+            createdAt:new Date().toISOString(),
+
+            updatedAt:new Date().toISOString()
+        };
+
+        InventoryDB.memory.products.unshift(newProduct);
+
+        await InventoryDB.addTransaction({
+
+            id:generateId(),
+
+            productId:newProduct.id,
+
+            productName:newProduct.name,
+
+            type:"initial",
+
+            quantity:newProduct.quantity,
+
+            previousStock:0,
+
+            newStock:newProduct.quantity,
+
+            date:new Date().toLocaleString()
+        });
+
+        await InventoryDB.saveDeviceFiles();
+
+        renderProducts();
+        renderTransactions();
+        renderStats();
+
+        clearForm();
     }
 
-    product.updatedAt =
-        new Date().toISOString();
+    function clearForm(){
 
-    await InventoryDB.addTransaction({
+        document.getElementById("name").value = "";
+        document.getElementById("size").value = "";
+        document.getElementById("quantity").value = "";
+        document.getElementById("minStock").value = "";
+    }
 
-        id:generateId(),
+    async function changeStock(id,action){
 
-        productId:product.id,
-
-        productName:product.name,
-
-        type:action,
-
-        quantity:qty,
-
-        previousStock:previous,
-
-        newStock:product.quantity,
-
-        date:new Date().toLocaleString()
-    });
-
-    await InventoryDB.saveDeviceFiles();
-
-    renderProducts();
-    renderTransactions();
-    renderStats();
-}
-
-// ======================================
-// EDIT
-// ======================================
-
-async function editProduct(id){
-
-    if(MODE!=="admin") return;
-
-    const product =
-        InventoryDB.memory.products.find(
-            p=>p.id===id
-        );
-
-    if(!product) return;
-
-    const newName =
-        prompt("Product Name",product.name);
-
-    if(!newName) return;
-
-    const newQty =
-        Number(prompt("Quantity",product.quantity));
-
-    const newMin =
-        Number(prompt("Min Stock",product.minStock));
-
-    product.name = newName;
-    product.quantity = newQty;
-    product.minStock = newMin;
-
-    product.updatedAt =
-        new Date().toISOString();
-
-    await InventoryDB.saveDeviceFiles();
-
-    renderProducts();
-    renderStats();
-}
-
-// ======================================
-// DELETE
-// ======================================
-
-async function deleteProduct(id){
-
-    if(MODE!=="admin") return;
-
-    if(!confirm("Delete product?")) return;
-
-    InventoryDB.memory.products =
-        InventoryDB.memory.products.filter(
-            p=>p.id!==id
-        );
-
-    await InventoryDB.saveDeviceFiles();
-
-    renderProducts();
-    renderStats();
-}
-
-// ======================================
-// RENDER PRODUCTS
-// ======================================
-
-function renderProducts(){
-
-    const tbody =
-        document.getElementById("productTable");
-
-    tbody.innerHTML = "";
-
-    InventoryDB.memory.products.forEach(product=>{
-
-        const status =
-            getStatus(
-                product.quantity,
-                product.minStock
+        if(MODE!=="admin") return;
+    
+        const product =
+            InventoryDB.memory.products.find(
+                p=>p.id===id
             );
-
-        tbody.innerHTML += `
-        <tr>
-
-            <td>${product.name}</td>
-            <td>${product.size}</td>
-            <td>${product.unitType}</td>
-            <td>${product.quantity}</td>
-            <td>${product.minStock}</td>
-
-            <td class="${status}">
-                ${status.toUpperCase()}
-            </td>
-
-            <td>
-
-                ${
-                    MODE==="admin"
-
-                    ?
-
-                    `
-                    <div class="actions">
-
-                        <button onclick="changeStock('${product.id}','add')">
-                            +
-                        </button>
-
-                        <button onclick="changeStock('${product.id}','remove')">
-                            -
-                        </button>
-
-                        <button onclick="editProduct('${product.id}')">
-                            Edit
-                        </button>
-
-                        <button onclick="deleteProduct('${product.id}')">
-                            Delete
-                        </button>
-
-                    </div>
-                    `
-
-                    :
-
-                    `View Only`
-                }
-
-            </td>
-
-        </tr>
-        `;
-    });
-}
-
-// ======================================
-// RENDER TRANSACTIONS
-// ======================================
-
-function renderTransactions(){
-
-    const tbody =
-        document.getElementById("transactionTable");
-
-    tbody.innerHTML = "";
-
-    InventoryDB.memory.transactions.forEach(t=>{
-
-        tbody.innerHTML += `
-        <tr>
-
-            <td>${t.productName}</td>
-            <td>${t.type}</td>
-            <td>${t.quantity}</td>
-            <td>${t.previousStock}</td>
-            <td>${t.newStock}</td>
-            <td>${t.date}</td>
-
-        </tr>
-        `;
-    });
-}
-
-// ======================================
-// STATS
-// ======================================
-
-function renderStats(){
-
-    const products =
-        InventoryDB.memory.products;
-
-    let totalStock = 0;
-    let lowStock = 0;
-    let critical = 0;
-
-    products.forEach(p=>{
-
-        totalStock += p.quantity;
-
-        if(p.quantity <= p.minStock){
-
-            lowStock++;
+    
+        if(!product) return;
+    
+        const qty =
+            Number(prompt("Enter quantity"));
+    
+        if(isNaN(qty) || qty<=0) return;
+    
+        const previous = product.quantity;
+    
+        if(action==="add"){
+    
+            product.quantity += qty;
+    
+        }else{
+    
+            if(qty > product.quantity){
+    
+                alert("Insufficient stock");
+    
+                return;
+            }
+    
+            product.quantity -= qty;
         }
+    
+        product.updatedAt =
+            new Date().toISOString();
+    
+        await InventoryDB.addTransaction({
+    
+            id:generateId(),
+    
+            productId:product.id,
+    
+            productName:product.name,
+    
+            type:action,
+    
+            quantity:qty,
+    
+            previousStock:previous,
+    
+            newStock:product.quantity,
+    
+            date:new Date().toLocaleString()
+        });
+    
+        await InventoryDB.saveDeviceFiles();
+    
+        renderProducts();
+        renderTransactions();
+        renderStats();
+    }
+    
+    // ======================================
+    // EDIT
+    // ======================================
+    
+    async function editProduct(id){
+    
+        if(MODE!=="admin") return;
+    
+        const product =
+            InventoryDB.memory.products.find(
+                p=>p.id===id
+            );
+    
+        if(!product) return;
+    
+        const newName =
+            prompt("Product Name",product.name);
+    
+        if(!newName) return;
+    
+        const newQty =
+            Number(prompt("Quantity",product.quantity));
+    
+        const newMin =
+            Number(prompt("Min Stock",product.minStock));
+    
+        product.name = newName;
+        product.quantity = newQty;
+        product.minStock = newMin;
+    
+        product.updatedAt =
+            new Date().toISOString();
+    
+        await InventoryDB.saveDeviceFiles();
+    
+        renderProducts();
+        renderStats();
+    }
+    
+    // ======================================
+    // DELETE
+    // ======================================
+    
+    async function deleteProduct(id){
+    
+        if(MODE!=="admin") return;
+    
+        if(!confirm("Delete product?")) return;
+    
+        InventoryDB.memory.products =
+            InventoryDB.memory.products.filter(
+                p=>p.id!==id
+            );
+    
+        await InventoryDB.saveDeviceFiles();
+    
+        renderProducts();
+        renderStats();
+    }
+    
+    // ======================================
+    // RENDER PRODUCTS
+    // ======================================
+    
+    function renderProducts(){
+    
+        const tbody =
+            document.getElementById("productTable");
+    
+        tbody.innerHTML = "";
+    
+        InventoryDB.memory.products.forEach(product=>{
+    
+            const status =
+                getStatus(
+                    product.quantity,
+                    product.minStock
+                );
+    
+            tbody.innerHTML += `
+            <tr>
+    
+                <td>${product.name}</td>
+                <td>${product.size}</td>
+                <td>${product.unitType}</td>
+                <td>${product.quantity}</td>
+                <td>${product.minStock}</td>
+    
+                <td class="${status}">
+                    ${status.toUpperCase()}
+                </td>
+    
+                <td>
+    
+                    ${
+                        MODE==="admin"
+    
+                        ?
+    
+                        `
+                        <div class="actions">
+    
+                            <button onclick="changeStock('${product.id}','add')">
+                                +
+                            </button>
+    
+                            <button onclick="changeStock('${product.id}','remove')">
+                                -
+                            </button>
+    
+                            <button onclick="editProduct('${product.id}')">
+                                Edit
+                            </button>
+    
+                            <button onclick="deleteProduct('${product.id}')">
+                                Delete
+                            </button>
+    
+                        </div>
+                        `
+    
+                        :
+    
+                        `View Only`
+                    }
+    
+                </td>
+    
+            </tr>
+            `;
+        });
+    }
+    
+    // ======================================
+    // RENDER TRANSACTIONS
+    // ======================================
+    
+    function renderTransactions(){
+    
+        const tbody =
+            document.getElementById("transactionTable");
+    
+        tbody.innerHTML = "";
+    
+        InventoryDB.memory.transactions.forEach(t=>{
+    
+            tbody.innerHTML += `
+            <tr>
+    
+                <td>${t.productName}</td>
+                <td>${t.type}</td>
+                <td>${t.quantity}</td>
+                <td>${t.previousStock}</td>
+                <td>${t.newStock}</td>
+                <td>${t.date}</td>
+    
+            </tr>
+            `;
+        });
+    }
+    
+    // ======================================
+    // STATS
+    // ======================================
+    
+    function renderStats(){
+    
+        const products =
+            InventoryDB.memory.products;
+    
+        let totalStock = 0;
+        let lowStock = 0;
+        let critical = 0;
+    
+        products.forEach(p=>{
+    
+            totalStock += p.quantity;
+    
+            if(p.quantity <= p.minStock){
+    
+                lowStock++;
+            }
+    
+            if(p.quantity === 0){
+    
+                critical++;
+            }
+        });
+    
+        document.getElementById("stats").innerHTML = `
+    
+        <div class="stat-box">
+    
+            <h3>Total Products</h3>
+    
+            <h2>${products.length}</h2>
+    
+        </div>
+    
+        <div class="stat-box">
+    
+            <h3>Total Stock</h3>
+    
+            <h2>${totalStock}</h2>
+    
+        </div>
+    
+        <div class="stat-box">
+    
+            <h3>Low Stock</h3>
+    
+            <h2>${lowStock}</h2>
+    
+        </div>
+    
+        <div class="stat-box">
+    
+            <h3>Critical</h3>
+    
+            <h2>${critical}</h2>
+    
+        </div>
+        `;
+    }
 
-        if(p.quantity === 0){
-
-            critical++;
-        }
-    });
-
-    document.getElementById("stats").innerHTML = `
-
-    <div class="stat-box">
-
-        <h3>Total Products</h3>
-
-        <h2>${products.length}</h2>
-
-    </div>
-
-    <div class="stat-box">
-
-        <h3>Total Stock</h3>
-
-        <h2>${totalStock}</h2>
-
-    </div>
-
-    <div class="stat-box">
-
-        <h3>Low Stock</h3>
-
-        <h2>${lowStock}</h2>
-
-    </div>
-
-    <div class="stat-box">
-
-        <h3>Critical</h3>
-
-        <h2>${critical}</h2>
-
-    </div>
-    `;
-}
+    // ======================================
+    // REMAINING FUNCTIONS
+    // ======================================
+    // KEEP ALL YOUR EXISTING:
+    //
+    // changeStock()
+    // editProduct()
+    // deleteProduct()
+    // renderProducts()
+    // renderTransactions()
+    // renderStats()
+    //
+    // EXACTLY THE SAME
+    // ======================================
 
 </script>
 
