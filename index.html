@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Lightning Stock | Instant Inventory</title>
+<title>Lightning Stock | Instant Inventory + PDF Export</title>
+<!-- Include jsPDF and autoTable for clean PDF generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
 
 /* =========================================
@@ -176,6 +179,25 @@ button {
     margin-top: 20px;
 }
 
+/* PDF BUTTON style enhancements */
+.pdf-export-btn {
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.pdf-export-btn:hover {
+    background: #b91c1c;
+    transform: scale(0.96);
+}
+
 /* =========================================
    MAIN AREA
 ========================================= */
@@ -193,6 +215,7 @@ button {
     align-items: center;
     margin-bottom: 28px;
     flex-wrap: wrap;
+    gap: 12px;
 }
 
 .topbar h1 {
@@ -292,9 +315,7 @@ input, select {
     background: white;
 }
 
-/* =========================================
-   PRODUCT CARD GRID - FAST & RESPONSIVE
-========================================= */
+/* PRODUCT CARD GRID */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -391,7 +412,6 @@ input, select {
     font-weight: bold;
 }
 
-/* ACTION BUTTONS (at bottom of card) */
 .action-bar {
     display: flex;
     gap: 10px;
@@ -441,7 +461,6 @@ input, select {
     color: #1e293b;
 }
 
-/* Loading spinner inline */
 .loading-badge {
     display: inline-block;
     width: 14px;
@@ -484,13 +503,6 @@ input, select {
     border-radius: 36px;
     padding: 28px 30px;
     box-shadow: 0 40px 60px rgba(0,0,0,0.3);
-}
-
-.modal-container h3 {
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 22px;
-    color: #0c4a6e;
 }
 
 .modal-form-grid {
@@ -572,8 +584,6 @@ input, select {
     .mobile-top { display: flex; }
     .main { padding: 16px; }
     .product-grid { grid-template-columns: 1fr; gap: 18px; }
-    .action-bar { flex-wrap: wrap; justify-content: center; }
-    .action-btn { flex: 1; justify-content: center; }
     .modal-form-grid { grid-template-columns: 1fr; }
     .cards { grid-template-columns: 1fr; }
     .filters { grid-template-columns: 1fr; }
@@ -586,6 +596,8 @@ table { width: 100%; border-collapse: collapse; background: white; border-radius
 th { background: #1e293b; color: white; padding: 12px; }
 td { padding: 10px; border-bottom: 1px solid #eef2ff; text-align: left; }
 
+/* PDF button inside topbar */
+.topbar-right { display: flex; gap: 12px; }
 </style>
 </head>
 <body>
@@ -616,8 +628,9 @@ td { padding: 10px; border-bottom: 1px solid #eef2ff; text-align: left; }
         </div>
 
         <div class="main">
+            <!-- Dashboard page with export PDF button (summary not needed but for consistency) -->
             <div id="dashboardPage" class="page active-page">
-                <div class="topbar"><h1>Dashboard</h1></div>
+                <div class="topbar"><h1>Dashboard</h1><div class="topbar-right"></div></div>
                 <div class="cards">
                     <div class="card"><h3>Total Products</h3><h1 id="totalProducts">0</h1></div>
                     <div class="card"><h3>Total Stock (units)</h3><h1 id="totalStock">0</h1></div>
@@ -625,8 +638,14 @@ td { padding: 10px; border-bottom: 1px solid #eef2ff; text-align: left; }
                 </div>
             </div>
 
+            <!-- PRODUCTS PAGE with PDF export button -->
             <div id="productsPage" class="page">
-                <div class="topbar"><h1>🛒 Products</h1></div>
+                <div class="topbar">
+                    <h1>🛒 Products</h1>
+                    <div class="topbar-right">
+                        <button class="pdf-export-btn" onclick="exportProductsToPDF()">📄 Export Products PDF</button>
+                    </div>
+                </div>
                 <div class="card">
                     <h2>🔍 Filters</h2>
                     <div class="filter-row">
@@ -647,8 +666,14 @@ td { padding: 10px; border-bottom: 1px solid #eef2ff; text-align: left; }
                 <div id="productGridContainer" class="product-grid"></div>
             </div>
 
+            <!-- AUDIT PAGE with PDF export button -->
             <div id="auditPage" class="page">
-                <div class="topbar"><h1>Audit Logs</h1></div>
+                <div class="topbar">
+                    <h1>Audit Logs</h1>
+                    <div class="topbar-right">
+                        <button class="pdf-export-btn" onclick="exportAuditToPDF()">📄 Export Audit PDF</button>
+                    </div>
+                </div>
                 <div class="card">
                     <h2>Filter entries</h2>
                     <div class="filter-row">
@@ -663,9 +688,7 @@ td { padding: 10px; border-bottom: 1px solid #eef2ff; text-align: left; }
                 <div class="card">
                     <div class="table-wrapper">
                         <table>
-                            <thead>
-                                <tr><th>Action</th><th>Product</th><th>Qty</th><th>Details</th><th>Date</th></tr>
-                            </thead>
+                            <thead><tr><th>Action</th><th>Product</th><th>Qty</th><th>Details</th><th>Date</th></tr></thead>
                             <tbody id="auditTable"></tbody>
                         </table>
                     </div>
@@ -693,6 +716,8 @@ td { padding: 10px; border-bottom: 1px solid #eef2ff; text-align: left; }
 </div>
 
 <script>
+const { jsPDF } = window.jspdf;
+
 const API_URL = "https://script.google.com/macros/s/AKfycbwkKzINTIdLJEaADVNCPSp63VaKVZ97xuSjSe7NExzct8wn9RRafoLS3jWVsdzNL-Swuw/exec";
 
 let products = [], filteredProducts = [], audits = [], filteredAudits = [];
@@ -774,7 +799,6 @@ function applyFilters() {
     renderProductsGrid();
 }
 
-// CLEAR PRODUCT FILTERS
 function clearProductFilters() {
     document.getElementById("filterBrand").value = "";
     document.getElementById("filterProduct").value = "";
@@ -784,7 +808,6 @@ function clearProductFilters() {
     showToast("Product filters cleared", "success");
 }
 
-// CLEAR AUDIT FILTERS
 function clearAuditFilters() {
     document.getElementById("auditActionFilter").value = "";
     document.getElementById("auditProductFilter").value = "";
@@ -792,6 +815,58 @@ function clearAuditFilters() {
     applyAuditFilters();
     showToast("Audit filters cleared", "success");
 }
+
+// PDF Export: Products (based on current filtered view)
+window.exportProductsToPDF = function() {
+    const dataToExport = filteredProducts.length ? filteredProducts : products;
+    if (!dataToExport.length) { showToast("No products to export", "error"); return; }
+    const doc = new jsPDF({ orientation: 'landscape' });
+    doc.setFontSize(18);
+    doc.text("Lightning Stock - Products Report", 14, 15);
+    doc.setFontSize(10);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 25);
+    
+    const tableData = dataToExport.map(p => [
+        p.productName, p.category, p.brand, p.size || '—', p.quantityType, p.presentStock, p.minimumStock, (Number(p.presentStock) <= Number(p.minimumStock) ? "⚠️ Low" : "OK")
+    ]);
+    doc.autoTable({
+        head: [["Product", "Category", "Brand", "Size", "Unit", "Current Stock", "Min Stock", "Status"]],
+        body: tableData,
+        startY: 32,
+        theme: 'striped',
+        headStyles: { fillColor: [31, 99, 146], textColor: 255, fontSize: 9 },
+        bodyStyles: { fontSize: 8 },
+        margin: { left: 10, right: 10 }
+    });
+    doc.save(`products_${new Date().toISOString().slice(0,19)}.pdf`);
+    showToast("Products PDF downloaded", "success");
+};
+
+// PDF Export: Audit logs (based on current filtered audits)
+window.exportAuditToPDF = function() {
+    const dataToExport = filteredAudits.length ? filteredAudits : audits;
+    if (!dataToExport.length) { showToast("No audit entries to export", "error"); return; }
+    const doc = new jsPDF({ orientation: 'landscape' });
+    doc.setFontSize(18);
+    doc.text("Lightning Stock - Audit Logs", 14, 15);
+    doc.setFontSize(10);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 25);
+    
+    const tableData = dataToExport.map(a => [
+        a.action, a.productName, a.quantity || '-', a.details || '-', a.date
+    ]);
+    doc.autoTable({
+        head: [["Action", "Product", "Quantity", "Details", "Date & Time"]],
+        body: tableData,
+        startY: 32,
+        theme: 'striped',
+        headStyles: { fillColor: [31, 99, 146], textColor: 255, fontSize: 9 },
+        bodyStyles: { fontSize: 8 },
+        margin: { left: 10, right: 10 }
+    });
+    doc.save(`audit_${new Date().toISOString().slice(0,19)}.pdf`);
+    showToast("Audit PDF downloaded", "success");
+};
 
 async function addStockInstant(id) {
     let qty = prompt("➕ Enter quantity to add:");
@@ -802,7 +877,6 @@ async function addStockInstant(id) {
     applyFilters();
     updateDashboardUI();
     showToast(`+${qty} added to ${product.productName}`, 'success');
-    
     pendingSync.add(id);
     renderProductsGrid();
     await api("addStock", { id, quantity: qty }, true);
@@ -824,7 +898,6 @@ async function reduceStockInstant(id) {
     applyFilters();
     updateDashboardUI();
     showToast(`-${qty} reduced from ${product.productName}`, 'success');
-    
     pendingSync.add(id);
     renderProductsGrid();
     await api("reduceStock", { id, quantity: qty }, true);
@@ -842,7 +915,6 @@ async function deleteProductInstant(id) {
     applyFilters();
     updateDashboardUI();
     showToast(`🗑 Deleted ${productName}`, 'success');
-    
     await api("deleteProduct", { id }, true);
     await loadAuditSilent();
 }
@@ -945,11 +1017,7 @@ function renderAudit() {
     const tbody = document.getElementById("auditTable");
     tbody.innerHTML = filteredAudits.slice().reverse().map(a => `
         <tr>
-            <td>${escapeHtml(a.action)}</td>
-            <td>${escapeHtml(a.productName)}</td>
-            <td>${a.quantity || '-'}</td>
-            <td>${escapeHtml(a.details || '')}</td>
-            <td>${a.date}</td>
+            <td>${escapeHtml(a.action)}</td><td>${escapeHtml(a.productName)}</td><td>${a.quantity || '-'}</td><td>${escapeHtml(a.details || '')}</td><td>${a.date}</td>
         </tr>
     `).join('');
 }
@@ -983,6 +1051,8 @@ window.toggleSidebar = toggleSidebar;
 window.showPage = showPage;
 window.changePassword = changePassword;
 window.logout = logout;
+window.exportProductsToPDF = exportProductsToPDF;
+window.exportAuditToPDF = exportAuditToPDF;
 </script>
 </body>
 </html>
